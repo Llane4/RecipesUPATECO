@@ -2,12 +2,13 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "./recetas.css"
 import Context from "../config/context";
+import RecetaCard from "./RecetaCard";
 
 
 const Recetas=()=>{
     const data= useContext(Context)
     console.log(data)
-    const [recetas, setRecetas]=useState(null)
+    const [recetas, setRecetas]=useState([])
     const url="https://sandbox.academiadevelopers.com/reciperover/recipes/"
     useEffect(()=>{
         axios.get(url)
@@ -26,27 +27,20 @@ const Recetas=()=>{
                     locations: response.data[0].locations,
                     categories: response.data[0].categories
                 }
-                setRecetas(recetasDato)
+                setRecetas([...recetas, recetasDato])
             })
   .catch(error => {
     console.error('Error al hacer la solicitud:', error);
   });
-    },[])
+    },[data])
     console.log(recetas)
     return (
         (recetas && <div className="contenedor">
-            <div className="contenedorDeRecetas">
-                <h1>{recetas.title}</h1>
-                <h3>{recetas.description}</h3>
-                <h3>Tiempo de preparacion: {recetas.preparation_time}</h3>
-                <h3>Tiempo de coccion: {recetas.cooking_time}</h3>
+            {recetas.map(receta=>(
+                <div className="contenedorDeRecetas">
+                <RecetaCard receta={receta}/>
             </div>
-            <div className="contenedorDeRecetas">
-                <h1>{recetas.title}</h1>
-                <h3>{recetas.description}</h3>
-                <h3>Tiempo de preparacion: {recetas.preparation_time}</h3>
-                <h3>Tiempo de coccion: {recetas.cooking_time}</h3>
-            </div>
+            ))}
         </div>)
     )
 }

@@ -6,7 +6,7 @@ import Context from './context';
 const ProtectedRoute = () => {
     const navigate=useNavigate()
     const data=useContext(Context)
-    console.log("ROUTE")
+    console.log(data)
     return data.isLogged ? <Outlet /> : <Navigate to="/" />;
 };
 

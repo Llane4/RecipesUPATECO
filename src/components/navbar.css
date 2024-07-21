@@ -17,3 +17,13 @@
     justify-content: space-between;
     align-items: center;
 }
+.navcontainerbuttons{
+    padding: 3px;
+    display: flex;
+    justify-items: end;
+
+}
+.navbuttons{
+    margin: 3px;
+    background-color: palegoldenrod;
+}

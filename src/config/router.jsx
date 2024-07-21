@@ -33,7 +33,7 @@ const router = createBrowserRouter([
               },
               {
                 path: '*',
-                element: <p>404 Error - Nothing here...</p>
+                element: <p style={{marginTop: "54px"}}>404 Error - Nothing here...</p>
               }]
     },
 ]);
