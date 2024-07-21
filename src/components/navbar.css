@@ -1,0 +1,19 @@
+.navheader{
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    z-index: 1;
+    height: 10px;
+}
+
+.navbar{
+    height: 52px;
+    background-color: darkslategray;
+}
+
+.navcontainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

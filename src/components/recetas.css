@@ -1,0 +1,17 @@
+.contenedorDeRecetas{
+    display:flex;
+    flex-direction: column;
+    justify-content: end;
+    justify-items: end;
+    align-content: end;
+    width: 60vw;
+}
+
+.contenedor{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    width: 100vw;
+}
