@@ -1,8 +1,8 @@
 .card{
     border-radius: 50px;
     border: 3px black solid;
-    background-color: rgb(183, 214, 96);
-    color: black;
+    background-color: #6e9987;
+    color: #27191c;
     display: flex;
     flex-direction: column;
     align-items: center;

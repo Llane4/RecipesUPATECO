@@ -14,5 +14,27 @@
     justify-content: center;
     justify-items: center;
     align-content: center;
-    width: 100vw;
+    background-color: #e0e4ce;
+    min-width: 90vw;  /* Ocupar todo el ancho disponible */
+    min-height: 100vh;  /* Ocupar al menos el 100% de la altura del viewport */
+    box-sizing: border-box;  /* Incluir padding y border en el tamaño total */
+}
+
+.recetas{
+    margin-top: 54px;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    background-color: #e0e4ce;
+    
+    input{
+        margin-top: 40px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 30%; /* Ajusta el ancho según sea necesario */
+        box-sizing: border-box;
+    }
 }
