@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const Login=()=>{
     const data=useContext(Context)
     const navigate=useNavigate()
-    console.log(data)
 
     useEffect(() => {
         if (data.isLogged) {
@@ -32,14 +31,12 @@ const Login=()=>{
     }
 
     function logUser(){
-        console.log("Formulario;" , form)
         axios.post('https://sandbox.academiadevelopers.com/api-auth/', form, {
             headers: {
               'Content-Type': 'application/json' // Ajusta esto según lo que necesite tu API
             }
           })
         .then(async response=>{
-            console.log(response.data)
             if(response.data.token){
                 await data.login()
             }

@@ -83,32 +83,36 @@ const Recetas=()=>{
     const data= useContext(Context)
 
     const [recetas, setRecetas]=useState([])
-    const [filtroRecetas, setFiltroRecetas]=useState(datosHard)
+    const [filtroRecetas, setFiltroRecetas]=useState(recetas)
     const [filtro, setFiltro]=useState("")
     const url="https://sandbox.academiadevelopers.com/reciperover/recipes/"
     useEffect(()=>{
         axios.get(url)
             .then(response => {
-                console.log(response.data);
-                const recetasDato={
-                    title: response.data[0].title,
-                    description: response.data[0].description,
-                    preparation_time: response.data[0].preparation_time,
-                    cooking_time: response.data[0].cooking_time,
-                    servings: response.data[0].servings,
-                    image:response.data[0].image,
-                    view_count: response.data[0].view_count,
-                    owner: response.data[0].owner,
-                    ingredients: response.data[0].ingredients,
-                    locations: response.data[0].locations,
-                    categories: response.data[0].categories
-                }
-                setRecetas([...recetas, recetasDato])
+                console.log(response.data.length);
+                
+                  const recetasDatos=response.data.map(receta=>({
+                    id: receta.id,
+                    title: receta.title,
+                    description: receta.description,
+                    preparation_time: receta.preparation_time,
+                    cooking_time: receta.cooking_time,
+                    servings: receta.servings,
+                    image:receta.image,
+                    view_count: receta.view_count,
+                    owner: receta.owner,
+                    ingredients: receta.ingredients,
+                    locations: receta.locations,
+                    categories: receta.categories
+                }))
+                setRecetas(prevRecetas => [...prevRecetas, ...recetasDatos]);
+                setFiltroRecetas(prevRecetas => [...prevRecetas, ...recetasDatos])
+                
             })
   .catch(error => {
     console.error('Error al hacer la solicitud:', error);
   });
-    },[data])
+    },[])
  
 
     async function handleChange(e){
@@ -117,13 +121,14 @@ const Recetas=()=>{
         console.log("FILTRO", valor)
         if(valor==""){
             console.log("No hay nada", valor)
-            setFiltroRecetas(datosHard)
+            setFiltroRecetas(recetas)
         }else{
-            const filtrado= datosHard.filter(receta => receta.title.toLowerCase().includes(valor.toLowerCase()))
+            const filtrado= recetas.filter(receta => receta.title.toLowerCase().includes(valor.toLowerCase()))
             console.log("FILTRADO", filtrado)
             setFiltroRecetas(filtrado)
         }
     }
+    console.log(recetas)
     console.log(filtroRecetas)
     return (
         (recetas && <div className="recetas">
@@ -136,7 +141,7 @@ const Recetas=()=>{
         <div className="contenedor">
             {filtroRecetas.map(receta=>(
                 <div className="contenedorDeRecetas">
-                <RecetaCard receta={receta}/>
+                <RecetaCard receta={receta} key={receta.id}/>
             </div>
             ))}
         </div></div>)

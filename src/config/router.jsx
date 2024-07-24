@@ -6,6 +6,7 @@ import Login from "../components/Login";
 import { useContext } from "react";
 import Context from "./context";
 import ProtectedRoute from "./ProtectedRoute";
+import RecetaPage from "../components/RecetaPage/RecetaPage";
 
 
 
@@ -27,13 +28,22 @@ const router = createBrowserRouter([
                   },
                   {
                     path: '/recetas',
-                    element: <Recetas />
+                    children: [
+                      {
+                          index: true,
+                          element: <Recetas />
+                      },
+                      {
+                          path: "/recetas/:id",
+                          element: <RecetaPage />
+                      },
+                  ]
                   }
                 ]
               },
               {
                 path: '*',
-                element: <p style={{marginTop: "54px"}}>404 Error - Nothing here...</p>
+                element: <p style={{marginTop: "54px"}}>404 Error</p>
               }]
     },
 ]);
