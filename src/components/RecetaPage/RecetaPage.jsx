@@ -2,15 +2,19 @@ import { useEffect, useState } from "react"
 import "./recetapage.css"
 import axios from "axios"
 import { useParams } from "react-router-dom"
+import Comentarios from "../Comentarios/Comentarios"
 
 const RecetaPage=()=>{
     const params = useParams();
     const [receta, setReceta]=useState({})
     const [ingredientes, setIngredientes]=useState(null)
+    const [isLoading, setIsLoading]=useState(true)
 
     useEffect(()=>{
+        
         const fetchReceta=async ()=>{
             try {
+                setIsLoading(true)
                 const respondeReceta=await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}`)
                 const datosReceta=respondeReceta.data
 
@@ -42,7 +46,7 @@ const RecetaPage=()=>{
                     categories: datosReceta.categories
                 })
                 setIngredientes(datosIngredientes)
-
+                setIsLoading(false)
             } catch (error) {
                 
             }
@@ -52,7 +56,9 @@ const RecetaPage=()=>{
 
 
     } ,[])
-    
+    if (isLoading) {
+        return <div className="contenedor"><h2>Cargando...</h2></div>
+    }
     
     console.log(ingredientes)
     return (
@@ -87,6 +93,10 @@ const RecetaPage=()=>{
             <ul>1</ul>
             <ul>2</ul>
             <ul>3</ul>
+        </div>
+        <div className="descrip">
+            <Comentarios recetaId={receta.id}/>
+
         </div>
     </div>))
 }
