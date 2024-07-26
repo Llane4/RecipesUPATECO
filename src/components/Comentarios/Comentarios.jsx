@@ -4,7 +4,6 @@ import axios from "axios"
 
 
 const Comentarios= ({recetaId})=>{
-    console.log(recetaId)
     const [comment, setComment]=useState([])
     const recetaID=recetaId
 
@@ -19,7 +18,17 @@ const Comentarios= ({recetaId})=>{
                 for(let comentario of datosComentarios){
                     if(comentario.id == recetaID){
                         console.log("Comentario de la receta actual", comentario.content)
-                        comentariosActual.push(comentario)
+                        const responseUser=await axios.get(`https://sandbox.academiadevelopers.com/users/profiles/${comentario.author}`, {
+                            headers: {
+                              'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
+                              'Content-Type': 'application/json'
+                            }
+                          })
+                        comentariosActual.push({
+                            ...comentario,
+                            author: responseUser.data.first_name + " " + responseUser.data.last_name,
+                            image: responseUser.data.image
+                          })
                     }
                 }
 
@@ -30,7 +39,7 @@ const Comentarios= ({recetaId})=>{
         }
         fetchComentarios()
     },[])
-
+    console.log(comment)
 
     return (
         <div>

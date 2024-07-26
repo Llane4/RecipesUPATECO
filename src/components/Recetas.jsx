@@ -114,7 +114,32 @@ const Recetas=()=>{
   });
     },[])
  
-
+    const handleButtonClick = async () => {
+      try {
+          try {
+            var response= await fetch(`https://sandbox.academiadevelopers.com/reciperover/ingredients`,
+              {
+                method:"POST",
+                headers:{
+                  "Content-Type": "application/json",
+                  Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                },
+                body: JSON.stringify({
+                  name: "Tomate",
+                  description:""
+                })
+              }, 
+            )
+            response=await response.json()
+            console.log(response)
+          } catch (error) {
+            console.error('Error posting category:', error);
+          }
+        
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    }
     async function handleChange(e){
         const valor=e.target.value
         setFiltro(valor)
@@ -144,7 +169,11 @@ const Recetas=()=>{
                 <RecetaCard receta={receta} key={receta.id}/>
             </div>
             ))}
-        </div></div>)
+        </div>
+        <button onClick={handleButtonClick}>
+      Post Ingredients
+    </button>
+        </div>)
     )
 }
 

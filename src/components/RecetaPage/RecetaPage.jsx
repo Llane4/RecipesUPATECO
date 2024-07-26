@@ -3,11 +3,12 @@ import "./recetapage.css"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 import Comentarios from "../Comentarios/Comentarios"
+import Pasos from "../Pasos/Pasos"
+import Ingredientes from "../Ingredientes/Ingredientes"
 
 const RecetaPage=()=>{
     const params = useParams();
     const [receta, setReceta]=useState({})
-    const [ingredientes, setIngredientes]=useState(null)
     const [isLoading, setIsLoading]=useState(true)
 
     useEffect(()=>{
@@ -17,19 +18,6 @@ const RecetaPage=()=>{
                 setIsLoading(true)
                 const respondeReceta=await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}`)
                 const datosReceta=respondeReceta.data
-
-                const datosIngredientes=[]
-                console.log(respondeReceta)
-                for(let ingredienteID of datosReceta.ingredients){
-                    try {
-                        let url=`https://sandbox.academiadevelopers.com/reciperover/ingredients/${ingredienteID}`
-                        const ingredientesData =await axios.get(url);
-                        console.log(ingredientesData.data)
-                        datosIngredientes.push(ingredientesData.data)    
-                    } catch (error) {
-                        console.log("Error consiguiendo el ingrediente")
-                    }
-                }
 
                 setReceta({
                     id: datosReceta.id,
@@ -45,7 +33,7 @@ const RecetaPage=()=>{
                     locations: datosReceta.locations,
                     categories: datosReceta.categories
                 })
-                setIngredientes(datosIngredientes)
+                
                 setIsLoading(false)
             } catch (error) {
                 
@@ -59,8 +47,6 @@ const RecetaPage=()=>{
     if (isLoading) {
         return <div className="contenedor"><h2>Cargando...</h2></div>
     }
-    
-    console.log(ingredientes)
     return (
         (receta && <div className="contenedor">
         <h2>{receta.title}</h2>
@@ -76,23 +62,11 @@ const RecetaPage=()=>{
         </div>
         <div className="descrip">
             <h2>Ingredientes: </h2>
-                {
-                    ingredientes && ingredientes.length > 0 && (
-                        <div>
-                            {ingredientes.map((ingrediente, index) => (
-                                <div key={index}>
-                                    <ul>{ingrediente.name}</ul>
-                                </div>
-                            ))}
-                        </div>
-                    )
-                }
+                <Ingredientes recetaID={receta.id}/>
         </div>
         <div className="descrip">
             <h2>Pasos a seguir: </h2>
-            <ul>1</ul>
-            <ul>2</ul>
-            <ul>3</ul>
+            <Pasos recetaId={receta.id}/>
         </div>
         <div className="descrip">
             <Comentarios recetaId={receta.id}/>
