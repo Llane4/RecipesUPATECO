@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import "./comentarios.css"
 import axios from "axios"
+import InputComentario from "./InputComentario"
 
 
 const Comentarios= ({recetaId})=>{
@@ -16,7 +17,11 @@ const Comentarios= ({recetaId})=>{
                 const comentariosActual=[]
 
                 for(let comentario of datosComentarios){
-                    if(comentario.id == recetaID){
+                    console.log(comentario)
+                    console.log(comentario.recipe == recetaID)
+                    console.log(comentario.recipe)
+                    console.log(recetaID)
+                    if(comentario.recipe == recetaID){
                         console.log("Comentario de la receta actual", comentario.content)
                         const responseUser=await axios.get(`https://sandbox.academiadevelopers.com/users/profiles/${comentario.author}`, {
                             headers: {
@@ -44,10 +49,21 @@ const Comentarios= ({recetaId})=>{
     return (
         <div>
             <h2>Comentarios: </h2>
+            <InputComentario rID={recetaID}/>
             {
                 comment && comment.map((comentario, index)=>(
-                    <div className="comentario" key={index}>
-                        {comentario.content}
+                    <div    className="box">
+                        <div >
+                            <img className="imagen" src={comentario.image ? comentario.image : "https://thumbs.dreamstime.com/b/icono-an%C3%B3nimo-de-la-cara-del-perfil-persona-gris-silueta-avatar-masculino-defecto-placeholder-foto-aislado-en-el-fondo-blanco-107327860.jpg"}/>
+                        </div>
+                        <div className="datos">
+                            <div className="nombre">
+                                {comentario.author}
+                            </div>
+                            <div className="comentario" key={index}>
+                                {comentario.content}
+                            </div>
+                        </div>
                     </div>
                 ))
             }
