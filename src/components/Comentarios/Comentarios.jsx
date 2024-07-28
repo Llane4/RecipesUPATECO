@@ -1,13 +1,28 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import "./comentarios.css"
 import axios from "axios"
 import InputComentario from "./InputComentario"
+import Context from "../../config/context"
 
 
 const Comentarios= ({recetaId})=>{
+    const datos=useContext(Context)
     const [comment, setComment]=useState([])
     const recetaID=recetaId
 
+    const borrarComentario=async (id)=>{
+        console.log(id)
+        try {
+            await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/comments/${id}/`, {
+                headers: {
+                  'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
+                  'Content-Type': 'application/json'
+                }
+              });
+        } catch (error) {
+            console.log("Error al borrar el mensaje")
+        }
+    }
     useEffect(()=>{
         const fetchComentarios=async () =>{
             try {
@@ -22,7 +37,7 @@ const Comentarios= ({recetaId})=>{
                     console.log(comentario.recipe)
                     console.log(recetaID)
                     if(comentario.recipe == recetaID){
-                        console.log("Comentario de la receta actual", comentario.content)
+                        console.log("Comentario de la receta actual", comentario.author)
                         const responseUser=await axios.get(`https://sandbox.academiadevelopers.com/users/profiles/${comentario.author}`, {
                             headers: {
                               'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
@@ -31,7 +46,7 @@ const Comentarios= ({recetaId})=>{
                           })
                         comentariosActual.push({
                             ...comentario,
-                            author: responseUser.data.first_name + " " + responseUser.data.last_name,
+                            author_data: responseUser.data.first_name + " " + responseUser.data.last_name,
                             image: responseUser.data.image
                           })
                     }
@@ -52,15 +67,23 @@ const Comentarios= ({recetaId})=>{
             <InputComentario rID={recetaID}/>
             {
                 comment && comment.map((comentario, index)=>(
-                    <div    className="box">
+                    <div    className="box"  key={index}>
                         <div >
                             <img className="imagen" src={comentario.image ? comentario.image : "https://thumbs.dreamstime.com/b/icono-an%C3%B3nimo-de-la-cara-del-perfil-persona-gris-silueta-avatar-masculino-defecto-placeholder-foto-aislado-en-el-fondo-blanco-107327860.jpg"}/>
                         </div>
                         <div className="datos">
                             <div className="nombre">
-                                {comentario.author}
+                                <div>
+                                    {comentario.author_data}
+
+                                </div>
+                                {datos.userData.user__id==comentario.author?
+                                <div className="borrar" onClick={()=>borrarComentario(comentario.id)}>
+                                    X
+                                </div>:null}
+                                
                             </div>
-                            <div className="comentario" key={index}>
+                            <div className="comentario">
                                 {comentario.content}
                             </div>
                         </div>

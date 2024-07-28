@@ -33,11 +33,22 @@ const Login=()=>{
     function logUser(){
         axios.post('https://sandbox.academiadevelopers.com/api-auth/', form, {
             headers: {
-              'Content-Type': 'application/json' // Ajusta esto según lo que necesite tu API
+              'Content-Type': 'application/json'
             }
           })
         .then(async response=>{
             if(response.data.token){
+              const datos=await axios.get(
+                'https://sandbox.academiadevelopers.com/users/profiles/profile_data/',
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                  }
+                }
+              )
+                console.log(datos.data)
+                await data.setUserData(datos.data)
                 await data.login()
             }
         }).catch(function (error) {

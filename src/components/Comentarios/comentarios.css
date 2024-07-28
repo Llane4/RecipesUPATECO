@@ -16,9 +16,16 @@
 
 .nombre{
     font-weight: bold;
-    color:rgb(70, 73, 207)
+    color:rgb(70, 73, 207);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .datos{
     padding-left: 10px;
+    width: 100%;
+}
+.borrar{
+    cursor: pointer;
 }
