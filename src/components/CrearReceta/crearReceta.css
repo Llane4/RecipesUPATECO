@@ -1,0 +1,85 @@
+.contenedor{
+    margin-top: 52px;
+    display:flex;
+    flex-direction: column;
+    justify-content: start;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    background-color: #e0e4ce;
+    min-width: 98.75vw;  
+    min-height: 92vh;
+    
+}
+
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: antiquewhite;
+    gap: 10px;
+    background-color: #e6e6d5;
+    width: 40%;
+    border-radius: 10px;
+}
+
+.formItems{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    
+    input {
+        margin:0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        height: 30px;
+      }
+}
+
+.ingredientes{
+        min-width: 100%;
+        width: 50%;
+        background-color: #ccc;
+        border: 3px solid gray;
+        border-radius: 15px;
+        height: fit-content;
+        max-height: fit-content;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+}
+
+.ingrediente{
+        background-color: antiquewhite;
+        border: 1px solid white;
+        margin: 5px;
+        max-width: fit-content;
+        border-radius: 30px;
+        padding: 5px;
+        font-weight: bold;
+        transition: background-color 0.5s;
+        cursor: pointer;
+        height: fit-content;   
+}
+
+.pasosarea{
+    resize: none;
+    width: 100%;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.pasos{
+    background-color: antiquewhite;
+        border: 1px solid white;
+        margin: 5px;
+        
+        border-radius: 30px;
+        padding: 5px;
+        font-weight: bold;
+        transition: background-color 0.5s;
+        cursor: pointer;
+        height: fit-content;  
+        width: 100%; 
+}

@@ -10,15 +10,32 @@
 
 .contenedor{
     display:flex;
-    flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
     justify-items: center;
-    align-content: center;
+    align-items: flex-start;
     background-color: #e0e4ce;
-    min-width: 90vw;  /* Ocupar todo el ancho disponible */
-    min-height: 100vh;  /* Ocupar al menos el 100% de la altura del viewport */
-    box-sizing: border-box;  /* Incluir padding y border en el tamaño total */
+    min-width: 90vw; 
+    min-height: 100vh;  
+    box-sizing: border-box; 
 }
+
+.categorias{
+    width: 50%;
+    background-color: #ccc;
+    border: 3px solid gray;
+    border-radius: 15px;
+    height: fit-content;
+    max-height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+
+}
+
+
+
+
 
 .recetas{
     margin-top: 54px;

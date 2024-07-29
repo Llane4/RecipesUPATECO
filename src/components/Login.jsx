@@ -47,7 +47,7 @@ const Login=()=>{
                   }
                 }
               )
-                console.log(datos.data)
+        
                 await data.setUserData(datos.data)
                 await data.login()
             }

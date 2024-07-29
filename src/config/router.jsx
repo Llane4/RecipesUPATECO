@@ -7,6 +7,7 @@ import { useContext } from "react";
 import Context from "./context";
 import ProtectedRoute from "./ProtectedRoute";
 import RecetaPage from "../components/RecetaPage/RecetaPage";
+import CrearReceta from "../components/CrearReceta/CrearReceta";
 
 
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
                   {
                     path: '/categorias',
                     element: <Categorias />
+                  },
+                  {
+                    path: '/crear',
+                    element: <CrearReceta />
                   },
                   {
                     path: '/recetas',

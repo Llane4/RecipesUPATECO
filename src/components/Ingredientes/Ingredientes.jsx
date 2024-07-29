@@ -11,10 +11,10 @@ const Ingredientes=({recetaID})=>{
           try {
             const url = `https://sandbox.academiadevelopers.com/reciperover/recipes/${recetaID}/ingredients/`;
             const responseIngredientes = await axios.get(url);
-            const datosIngredientes = responseIngredientes.data;
+            const datosIngredientes = responseIngredientes.data.results;
     
             const datosUnidos = [];
-    
+            console.log(datosIngredientes)
             for (let ingrediente of datosIngredientes) {
               const responseDetalle = await axios.get(`https://sandbox.academiadevelopers.com/reciperover/ingredients/${ingrediente.ingredient}`);
               datosUnidos.push({

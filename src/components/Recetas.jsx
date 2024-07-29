@@ -3,6 +3,7 @@ import axios from "axios";
 import "./recetas.css"
 import Context from "../config/context";
 import RecetaCard from "./RecetaCard";
+import Categoria from "./Categoria/Categoria";
 
 const datosHard=[{
     "title": "Ensalada César",
@@ -85,13 +86,15 @@ const Recetas=()=>{
     const [recetas, setRecetas]=useState([])
     const [filtroRecetas, setFiltroRecetas]=useState(recetas)
     const [filtro, setFiltro]=useState("")
+    const [categorias, setCategorias]=useState([])
+    const [filtroCategorias, setFiltroCategorias]=useState([])
     const url="https://sandbox.academiadevelopers.com/reciperover/recipes/"
-    useEffect(()=>{
+    useEffect( ()=>{
         axios.get(url)
-            .then(response => {
+            .then(async response => {
                 console.log(response.data.length);
-                
-                  const recetasDatos=response.data.map(receta=>({
+                  const categoriasdatos=await axios.get("https://sandbox.academiadevelopers.com/reciperover/categories")
+                  const recetasDatos=response.data.results.map(receta=>({
                     id: receta.id,
                     title: receta.title,
                     description: receta.description,
@@ -107,7 +110,7 @@ const Recetas=()=>{
                 }))
                 setRecetas(prevRecetas => [...prevRecetas, ...recetasDatos]);
                 setFiltroRecetas(prevRecetas => [...prevRecetas, ...recetasDatos])
-                
+                setCategorias(categoriasdatos.data.results)
             })
   .catch(error => {
     console.error('Error al hacer la solicitud:', error);
@@ -140,35 +143,55 @@ const Recetas=()=>{
         console.error('Error fetching articles:', error);
       }
     }
-    async function handleChange(e){
-        const valor=e.target.value
-        setFiltro(valor)
-        console.log("FILTRO", valor)
-        if(valor==""){
-            console.log("No hay nada", valor)
-            setFiltroRecetas(recetas)
-        }else{
-            const filtrado= recetas.filter(receta => receta.title.toLowerCase().includes(valor.toLowerCase()))
-            console.log("FILTRADO", filtrado)
-            setFiltroRecetas(filtrado)
-        }
-    }
+
+    useEffect(()=>{
+      const valor=filtro
+      setFiltro(valor)
+      console.log("FILTRO", valor)
+      if(false){
+          console.log("No hay nada", valor)
+          setFiltroRecetas(recetas)
+      }else{
+          const filtrado= recetas.filter(receta => {
+            console.log("RECETA", receta)
+            const filtroPorNombres=receta.title.toLowerCase().includes(valor.toLowerCase())
+            const filtroPorCategoria=filtroCategorias.length === 0 || filtroCategorias.some(categoria => receta.categories.includes(categoria));
+            console.log(filtroPorCategoria)
+            return filtroPorNombres && filtroPorCategoria
+          })
+          console.log("FILTRADO", filtrado)
+          setFiltroRecetas(filtrado)
+      }
+    }, [filtro, filtroCategorias, recetas])
     console.log(recetas)
-    console.log(filtroRecetas)
+    console.log(filtroCategorias)
     return (
         (recetas && <div className="recetas">
 
         <input  placeholder="Buscar recetas..."
                 value={filtro}
-                onChange={handleChange}
+                onChange={e=>{setFiltro(e.target.value)}}
                 type="text"
         />
+
         <div className="contenedor">
-            {filtroRecetas.map(receta=>(
-                <div className="contenedorDeRecetas">
+        <h3>
+            Categorias:
+
+            </h3>
+          <div className="categorias">
+              {categorias && categorias.map((categoria, index)=>(
+                <Categoria key={index} categoria={categoria.name} categoriaID={categoria.id} filtroCategorias={filtroCategorias} setFiltroCategorias={setFiltroCategorias}/>
+              ))}
+          </div>
+          <div>
+
+            {filtroRecetas.map((receta, index)=>(
+              <div key={index} className="contenedorDeRecetas">
                 <RecetaCard receta={receta} key={receta.id}/>
             </div>
             ))}
+            </div>
         </div>
         <button onClick={handleButtonClick}>
       Post Ingredients
