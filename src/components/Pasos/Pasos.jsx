@@ -9,8 +9,8 @@ const Pasos=({recetaId})=>{
     useEffect(()=>{
         const pasosFetch=async()=>{
         try {
-            const responsePasos=await axios.get("https://sandbox.academiadevelopers.com/reciperover/steps/")
-            const datosPasos=responsePasos.data
+            const responsePasos=await axios.get("https://sandbox.academiadevelopers.com/reciperover/steps?page_size=100")
+            const datosPasos=responsePasos.data.results
 
             const pasosReceta=[]
 

@@ -163,8 +163,6 @@ const Recetas=()=>{
           setFiltroRecetas(filtrado)
       }
     }, [filtro, filtroCategorias, recetas])
-    console.log(recetas)
-    console.log(filtroCategorias)
     return (
         (recetas && <div className="recetas">
 
