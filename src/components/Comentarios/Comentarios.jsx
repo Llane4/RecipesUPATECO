@@ -13,50 +13,49 @@ const Comentarios= ({recetaId})=>{
     const borrarComentario=async (id)=>{
         console.log(id)
         try {
-            await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/comments/${id}/`, {
+            await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/comments/${id}`, {
                 headers: {
                   'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
                   'Content-Type': 'application/json'
                 }
               });
+            fetchComentarios()
         } catch (error) {
-            console.log("Error al borrar el mensaje")
+            console.log(error)
+        }
+    }
+
+    const fetchComentarios=async () =>{
+        try {
+            const responseComentarios=await axios.get("https://sandbox.academiadevelopers.com/reciperover/comments/")
+            const datosComentarios=responseComentarios.data.results
+
+            const comentariosActual=[]
+
+            for(let comentario of datosComentarios){
+                if(comentario.recipe == recetaID){
+                    console.log("Comentario de la receta actual", comentario.author)
+                    const responseUser=await axios.get(`https://sandbox.academiadevelopers.com/users/profiles/${comentario.author}`, {
+                        headers: {
+                          'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
+                          'Content-Type': 'application/json'
+                        }
+                      })
+                    comentariosActual.push({
+                        ...comentario,
+                        author_data: responseUser.data.first_name + " " + responseUser.data.last_name,
+                        image: responseUser.data.image
+                      })
+                }
+            }
+
+            setComment(comentariosActual)
+        } catch (error) {
+            
         }
     }
     useEffect(()=>{
-        const fetchComentarios=async () =>{
-            try {
-                const responseComentarios=await axios.get("https://sandbox.academiadevelopers.com/reciperover/comments/")
-                const datosComentarios=responseComentarios.data.results
-
-                const comentariosActual=[]
-
-                for(let comentario of datosComentarios){
-                    console.log(comentario)
-                    console.log(comentario.recipe == recetaID)
-                    console.log(comentario.recipe)
-                    console.log(recetaID)
-                    if(comentario.recipe == recetaID){
-                        console.log("Comentario de la receta actual", comentario.author)
-                        const responseUser=await axios.get(`https://sandbox.academiadevelopers.com/users/profiles/${comentario.author}`, {
-                            headers: {
-                              'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
-                              'Content-Type': 'application/json'
-                            }
-                          })
-                        comentariosActual.push({
-                            ...comentario,
-                            author_data: responseUser.data.first_name + " " + responseUser.data.last_name,
-                            image: responseUser.data.image
-                          })
-                    }
-                }
-
-                setComment(comentariosActual)
-            } catch (error) {
-                
-            }
-        }
+        
         fetchComentarios()
     },[])
     console.log(comment)
@@ -64,7 +63,7 @@ const Comentarios= ({recetaId})=>{
     return (
         <div>
             <h2>Comentarios: </h2>
-            <InputComentario rID={recetaID}/>
+            <InputComentario rID={recetaID} fetchComentarios={fetchComentarios}/>
             {
                 comment && comment.map((comentario, index)=>(
                     <div    className="box"  key={index}>
@@ -77,7 +76,7 @@ const Comentarios= ({recetaId})=>{
                                     {comentario.author_data}
 
                                 </div>
-                                {datos.userData.user__id==comentario.author?
+                                {localStorage.getItem("id")==comentario.author?
                                 <div className="borrar" onClick={()=>borrarComentario(comentario.id)}>
                                     X
                                 </div>:null}

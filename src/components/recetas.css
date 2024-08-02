@@ -1,11 +1,10 @@
 .contenedorDeRecetas{
     margin-top: 54px;
     display:flex;
-    flex-direction: column;
-    justify-content: end;
-    justify-items: end;
-    align-content: end;
-    width: 60vw;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    width: 90vw;
 }
 
 .contenedor{
@@ -21,7 +20,7 @@
 }
 
 .categorias{
-    width: 50%;
+    width:60%;
     background-color: #ccc;
     border: 3px solid gray;
     border-radius: 15px;

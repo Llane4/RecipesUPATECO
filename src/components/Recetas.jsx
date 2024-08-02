@@ -88,7 +88,7 @@ const Recetas=()=>{
     const [filtro, setFiltro]=useState("")
     const [categorias, setCategorias]=useState([])
     const [filtroCategorias, setFiltroCategorias]=useState([])
-    const url="https://sandbox.academiadevelopers.com/reciperover/recipes/"
+    const url="https://sandbox.academiadevelopers.com/reciperover/recipes?page_size=100"
     useEffect( ()=>{
         axios.get(url)
             .then(async response => {
@@ -181,14 +181,16 @@ const Recetas=()=>{
               {categorias && categorias.map((categoria, index)=>(
                 <Categoria key={index} categoria={categoria.name} categoriaID={categoria.id} filtroCategorias={filtroCategorias} setFiltroCategorias={setFiltroCategorias}/>
               ))}
+              <Categoria categoria={"Todos"} categoriaID={-1} filtroCategorias={filtroCategorias} setFiltroCategorias={setFiltroCategorias}/>
           </div>
           <div>
-
+          
+          <div className="contenedorDeRecetas">
             {filtroRecetas.map((receta, index)=>(
-              <div key={index} className="contenedorDeRecetas">
+              
                 <RecetaCard receta={receta} key={receta.id}/>
-            </div>
-            ))}
+              ))}
+              </div>
             </div>
         </div>
         <button onClick={handleButtonClick}>

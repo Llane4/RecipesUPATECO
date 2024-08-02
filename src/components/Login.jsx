@@ -3,13 +3,15 @@ import axios from "axios";
 import Context from "../config/context";
 import { useNavigate } from "react-router-dom";
 
+
 const Login=()=>{
     const data=useContext(Context)
     const navigate=useNavigate()
 
     useEffect(() => {
+      console.log("DATA",data)
         if (data.isLogged) {
-          navigate("/categorias");
+          navigate("/recetas");
         }
       }, [data.isLogged, navigate]);
     const [form, setForm]=useState({
@@ -37,7 +39,10 @@ const Login=()=>{
             }
           })
         .then(async response=>{
+      
             if(response.data.token){
+              await localStorage.setItem("token", response.data.token)
+              await localStorage.setItem("isLogged", true)
               const datos=await axios.get(
                 'https://sandbox.academiadevelopers.com/users/profiles/profile_data/',
                 {
@@ -47,16 +52,25 @@ const Login=()=>{
                   }
                 }
               )
-        
+              console.log(datos.data)
+                await localStorage.setItem("id", datos.data.user__id)
                 await data.setUserData(datos.data)
                 await data.login()
             }
         }).catch(function (error) {
-            console.log(error.response.data.non_field_errors[0]);
+            console.log(error);
           })
+    }
+
+    const borrarDatos=(e)=>{
+      e.preventDefault()
+      localStorage.removeItem("token")
+      localStorage.removeItem("id")
+
     }
     return (
         <div style={{marginTop:"52px"}}>
+            <button onClick={borrarDatos}>Borrar datos</button>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username: </label>

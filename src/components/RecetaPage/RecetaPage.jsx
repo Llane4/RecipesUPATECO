@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import Comentarios from "../Comentarios/Comentarios"
 import Pasos from "../Pasos/Pasos"
 import Ingredientes from "../Ingredientes/Ingredientes"
+import Videotutorial from "../Videotutorial/Videotutorial"
 
 const RecetaPage=()=>{
     const params = useParams();
@@ -50,7 +51,7 @@ const RecetaPage=()=>{
     return (
         (receta && <div className="contenedor">
         <h2>{receta.title}</h2>
-        <img src="https://cdn0.recetasgratis.net/es/posts/6/2/9/galletas_con_chispas_de_chocolate_caseras_35926_600.webp"/>
+        <img src={receta.image?receta.image:"https://cdn0.recetasgratis.net/es/posts/6/2/9/galletas_con_chispas_de_chocolate_caseras_35926_600.webp"}/>
         <div className="descrip">
             <h2>{receta.description}</h2>
         </div>
@@ -58,7 +59,7 @@ const RecetaPage=()=>{
             <h2 className="info">Porciones: {receta.servings}</h2>
             <h2 className="info">Tiempo de preparacion: {receta.preparation_time}</h2>
             <h2 className="info">Tiempo de cocinado: {receta.cooking_time}</h2>
-
+            <h2 className="info">Visitas: {receta.view_count}</h2>
         </div>
         <div className="descrip">
             <h2>Ingredientes: </h2>
@@ -67,6 +68,10 @@ const RecetaPage=()=>{
         <div className="descrip">
             <h2>Pasos a seguir: </h2>
             <Pasos recetaId={receta.id}/>
+        </div>
+        <div className="descrip">
+           <h2>Video:</h2> 
+           <Videotutorial url={"9nh1zUX54pw"}/>
         </div>
         <div className="descrip">
             <Comentarios recetaId={receta.id}/>

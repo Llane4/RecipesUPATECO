@@ -14,7 +14,6 @@ const Modal=({tipo})=>{
     const handleSubmit=async (e)=>{
         if(objeto.name=="")return
         e.preventDefault()
-        console.log(objeto)
         var ruta=""
         if(tipo== "Ingrediente"){
             ruta="ingredients"
@@ -46,7 +45,6 @@ const Modal=({tipo})=>{
             name: e.target.value
           });
     }
-    console.log(objeto)
     return (
         <div>
             <div onClick={handleOpenModal}>Abrir Modal</div>
@@ -56,7 +54,7 @@ const Modal=({tipo})=>{
                 <div>
                     <label>
                         {tipo && tipo=="Ingrediente"?<h2>Ingrediente</h2>:<h2>Categoria</h2>}
-                        <input type="text" value={objeto.name  || ''} onChange={handleChange} required />
+                        <input type="text" value={objeto.name  || ''} onChange={handleChange} />
                     </label>
                 </div>
             <button type="button" onClick={handleOpenModal}>Cancelar</button>

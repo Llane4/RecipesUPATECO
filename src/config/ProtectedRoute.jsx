@@ -6,8 +6,9 @@ import Context from './context';
 const ProtectedRoute = () => {
     const navigate=useNavigate()
     const data=useContext(Context)
-    console.log(data)
-    return data.isLogged ? <Outlet /> : <Navigate to="/" />;
+    let login=localStorage.getItem("token")
+    console.log(login)
+    return login ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default ProtectedRoute;

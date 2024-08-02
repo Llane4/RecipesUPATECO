@@ -8,6 +8,7 @@ import Context from "./context";
 import ProtectedRoute from "./ProtectedRoute";
 import RecetaPage from "../components/RecetaPage/RecetaPage";
 import CrearReceta from "../components/CrearReceta/CrearReceta";
+import EditarPage from "../components/EditarPage/EditarPage";
 
 
 
@@ -24,8 +25,8 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute/>,
                 children: [
                   {
-                    path: '/categorias',
-                    element: <Categorias />
+                    path: '/editar',
+                    element: <EditarPage />
                   },
                   {
                     path: '/crear',

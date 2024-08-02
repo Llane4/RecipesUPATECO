@@ -1,5 +1,6 @@
 .card{
     border-radius: 50px;
+    margin: 10px;
     border: 3px black solid;
     background-color: #6e9987;
     color: #27191c;
@@ -8,13 +9,33 @@
     align-items: center;
     cursor: pointer;
     text-decoration: none;
+    max-width: 25%;
+    min-width: 20%;
     h2{
         align-self: center;
     }
 
     img{
-        height: 200px;
-        width: 300px;
+        height: 30vh;
+        width: 25vw;
+        object-fit: cover;
     }
 
 }
+
+.container-img{
+    width: 100%;
+  height: 0;
+  padding-top: 75%;
+  position: relative;
+  overflow: hidden;
+}
+
+.recipe-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }

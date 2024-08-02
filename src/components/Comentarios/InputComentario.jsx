@@ -2,7 +2,7 @@ import axios from "axios"
 import "./inputComentario.css"
 import { useEffect, useState } from "react"
 
-const InputComentario=({rID})=>{
+const InputComentario=({rID, fetchComentarios})=>{
     const recetaID=rID
     const [comentario, setComentario]=useState("")
 
@@ -28,7 +28,7 @@ const InputComentario=({rID})=>{
                       }
                     }
                   );
-
+                fetchComentarios()
                 console.log(response.data)
             } catch (error) {
                 console.log(error)

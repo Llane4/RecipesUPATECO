@@ -1,0 +1,35 @@
+.contenedoreditar{
+    
+        margin-top: 52px;
+        display:flex;
+        flex-direction: column;
+        justify-content: start;
+        justify-items: center;
+        align-content: center;
+        align-items: center;
+        background-color: #e0e4ce;
+        min-width: 98.75vw;  
+        min-height: 92vh;
+}
+
+.misRecetas{
+        width: 60%;
+        background-color: #8e9ea834;
+        border: 2px solid black;
+        border-radius: 10px;
+        margin: 10px;
+        padding: 10px;
+
+        .item{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px;
+        }
+}
+
+.misBotones{
+    button{
+        margin: 3px;
+    }
+}

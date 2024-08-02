@@ -14,8 +14,8 @@ const Navbar=()=>{
                         <button className="navbuttons" onClick={() => navigate('/recetas')}>
                             Recetas
                         </button>
-                        <button className="navbuttons" onClick={() => navigate('/categorias')}>
-                            Categorias
+                        <button className="navbuttons" onClick={() => navigate('/editar')}>
+                            Mis recetas
                         </button>
                         <button className="navbuttons" onClick={() => navigate('/crear')}>
                             Crear recetas
