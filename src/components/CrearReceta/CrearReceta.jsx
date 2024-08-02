@@ -2,8 +2,11 @@ import "./crearReceta.css"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import Modal from "../Modal/Modal"
+import { useParams } from "react-router-dom"
 const unidades= ["g", "kg", "lbs", "oz", "ml", "l", "cup", "tbsp", "tsp", "u", "pcs", "pkgs", "pinch", "bunch" ]
 const CrearReceta=()=>{
+    const params=useParams()
+    const [modo, setModo]=useState("crear")
     const [receta, setReceta]=useState({
         title:"",
         description:"",
@@ -190,17 +193,59 @@ const CrearReceta=()=>{
         }
         }
 
-
-
-    useEffect(()=>{
-        const fetchIngredientes=async ()=>{
-
-            const ingredientesData=await axios.get("https://sandbox.academiadevelopers.com/reciperover/ingredients?page_size=100")
-            const categoriasData=await axios.get("https://sandbox.academiadevelopers.com/reciperover/categories")
-            setCategorias(categoriasData.data.results)
-            setIngredientes(ingredientesData.data.results)
+    const fetchIngredientes=async ()=>{
+        
+        const ingredientesData=await axios.get("https://sandbox.academiadevelopers.com/reciperover/ingredients?page_size=100")
+        const categoriasData=await axios.get("https://sandbox.academiadevelopers.com/reciperover/categories")
+        setCategorias(categoriasData.data.results)
+        setIngredientes(ingredientesData.data.results)
+        if(params.id ){
+            console.log("En modo editar")
+            fetchRecetaAEditar(categoriasData.data.results, ingredientesData.data.results)
+            setModo("editar")
         }
+        }
+    const fetchRecetaAEditar=async(categoriaArray, ingredienteArray)=>{
+        console.log("Categorias", categorias)
+        console.log("Ingredientes", ingredientes)
+        const recetaData=await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}/`)
+        const {title, description, preparation_time, cooking_time, servings}=recetaData.data
+        setReceta({
+            title, description, preparation_time, cooking_time, servings
+        })
+
+        //Datos de la categoria a editar
+        const categoriasData= await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}/categories/`)
+        const categoriasID= categoriasData.data.results.map((c)=>c.id)
+        const categoriaMap= new Map(categoriaArray.map(cat => [cat.id, cat]))
+        const categoriasAñadir= categoriasID.map(id=> categoriaMap.get((id))).filter(cat=>cat!== undefined)
+        categoriasAñadir.map((cat)=>{
+            setCategoriasReceta([...categoriasRecetas, cat])
+        })
+
+        //Datos de los ingredientes a editar
+        const ingredientesData= await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}/ingredients/`)
+        const ingredientesID=  ingredientesData.data.results.map((i)=>i.id)
+        const ingredienteMap= new Map(ingredienteArray.map(ing=> [ing.id, ing]))
+        const ingredientesAñadir= ingredientesID.map(id=>ingredienteMap.get((id))).filter(ing=>ing!==undefined)
+        ingredientesAñadir.map((ing)=>{
+            setIngredientesReceta([...ingredientesReceta, ing])
+        })
+        console.log(categoriasAñadir)
+        console.log(ingredientesAñadir)
+
+        //Datos de los pasos a editar
+        const pasosData= await axios.get(`https://sandbox.academiadevelopers.com/reciperover/steps?page_size=1000`)
+        const pasosAñadir=pasosData.data.results.filter(paso=>paso.recipe==params.id)
+        pasosAñadir.map((paso)=>{
+            setPasos([...pasos, paso.instruction])
+        })
+
+    }
+    useEffect(()=>{
+        
         fetchIngredientes()
+        
     },[])
     return(<div className="contenedor">
         <form className="formContainer" onSubmit={handleSubmit}>
@@ -237,8 +282,8 @@ const CrearReceta=()=>{
             <Modal tipo={"Ingrediente"}/>
             </div> 
             <div className="ingredientes">
-                {ingredientesReceta && ingredientesReceta.map(ingR=>(
-                    <div className="ingrediente"  onClick={() => borrarElemento({tipo:"Ingrediente" , id:ingR.ingredient})}>{ingR.name} {ingR.quantity} {ingR.measure}</div>
+                {ingredientesReceta && ingredientesReceta.map((ingR, index)=>(
+                    <div className="ingrediente" key={index}  onClick={() => borrarElemento({tipo:"Ingrediente" , id:ingR.ingredient})}>{ingR.name} {ingR.quantity} {ingR.measure}</div>
                 ))}
                 
             </div>

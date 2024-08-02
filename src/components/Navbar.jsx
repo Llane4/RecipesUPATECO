@@ -14,7 +14,7 @@ const Navbar=()=>{
                         <button className="navbuttons" onClick={() => navigate('/recetas')}>
                             Recetas
                         </button>
-                        <button className="navbuttons" onClick={() => navigate('/editar')}>
+                        <button className="navbuttons" onClick={() => navigate('/misrecetas')}>
                             Mis recetas
                         </button>
                         <button className="navbuttons" onClick={() => navigate('/crear')}>
