@@ -176,7 +176,7 @@ const CrearReceta=()=>{
             })
             const result=ingredientesReceta.map(async ingrediente=>{
                 if(ingOriginales.includes(parseInt(ingrediente.ingredient))){
-                    console.log("Es un viejo ingrediente modificado")
+                   
                 for(var i=0;i<datosIngredientes.length; i++){
                     if(ingrediente.ingredient == datosIngredientes[i].ingredient){
                         console.log(datosIngredientes[i])
