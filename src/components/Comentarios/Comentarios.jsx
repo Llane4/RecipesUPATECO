@@ -27,7 +27,7 @@ const Comentarios= ({recetaId})=>{
 
     const fetchComentarios=async () =>{
         try {
-            const responseComentarios=await axios.get("https://sandbox.academiadevelopers.com/reciperover/comments/")
+            const responseComentarios=await axios.get("https://sandbox.academiadevelopers.com/reciperover/comments/?page=1&page_size=3000")
             const datosComentarios=responseComentarios.data.results
 
             const comentariosActual=[]

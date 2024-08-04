@@ -17,6 +17,7 @@ const CrearReceta=()=>{
 
     //Ingredientes
     const [ingredientes, setIngredientes]=useState([])
+    const [ingOriginales, setIngOriginales]=useState([])
     const [ingredienteSeleccionado, setIngredienteSeleccionado]=useState({
         ingredient:"",
         name:"",
@@ -28,13 +29,14 @@ const CrearReceta=()=>{
 
     //Categorias
     const [categorias, setCategorias]=useState([])
+    const [catOriginales, setCatOriginales]=useState([])
     const [categoriasRecetas, setCategoriasReceta]=useState([])
     const [categoriaSeleccionado, setCategoriaSeleccionado]=useState()
 
     //Pasos
     const [pasoActual, setPasoActual]=useState()
     const [pasos, setPasos]=useState([])
-
+    const [pasosOriginales, setPasosOriginales]=useState([])
     const handleChangeReceta=(e)=>{
         const {name, value} = e.target
         setReceta(state => ({
@@ -64,7 +66,9 @@ const CrearReceta=()=>{
 
     const handleSubmit=async (e)=>{
         e.preventDefault()
-        console.log(receta)
+        if(modo=="crear"){
+
+       
         try {
             //Post de la receta base
             const response = await axios.post(
@@ -97,6 +101,7 @@ const CrearReceta=()=>{
                 )
             })
             //Post de las categorias a la receta
+            const categoriasData=await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${idReceta}/categories/`)
             const responseCategorias= await categoriasRecetas.map(async(catR)=>{
                 await axios.post("https://sandbox.academiadevelopers.com/reciperover/recipe-categories/",
                     {
@@ -128,12 +133,137 @@ const CrearReceta=()=>{
                     }
                 )
             })
+            
 
         } catch (error) {
             
         }
-    }
+        }
+        else{
+            console.log("MODO EDICION")
+            //Actualizar receta
+            const response = await axios.put(
+                `https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}`,
+                receta,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                  }
+                }
+            );
 
+            //Actualizar ingredientes
+            const idReceta=response.data.id
+            const responseIngredientes = await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${idReceta}/ingredients/`);
+            const datosIngredientes = responseIngredientes.data.results;
+            const ingID=ingredientesReceta.map(ing=>ing.id)
+            const borrarID=ingOriginales.filter(id=>!ingID.includes(id))
+            const borrarIngredientes= borrarID.map(async borrar=>{
+                for(var i=0;i<datosIngredientes.length; i++){
+                    if(borrar == datosIngredientes[i].ingredient){
+                        
+                        await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/recipe-ingredients/${datosIngredientes[i].id}/`,
+                            {
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                                }
+                            }
+                        )
+                    }
+                }
+            })
+            const result=ingredientesReceta.map(async ingrediente=>{
+                if(ingOriginales.includes(parseInt(ingrediente.ingredient))){
+                    console.log("Es un viejo ingrediente modificado")
+                for(var i=0;i<datosIngredientes.length; i++){
+                    if(ingrediente.ingredient == datosIngredientes[i].ingredient){
+                        console.log(datosIngredientes[i])
+                        await axios.put(`https://sandbox.academiadevelopers.com/reciperover/recipe-ingredients/${datosIngredientes[i].id}/`,
+                            {
+                                ingredient: ingrediente.ingredient,
+                                measure: ingrediente.measure,
+                                quantity: ingrediente.quantity,
+                                recipe: idReceta
+                            },
+                            {
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                                }
+                            }
+                        )
+                    }
+                }
+            }else{
+                console.log("Es un nuevo ingrediente")
+                await axios.post("https://sandbox.academiadevelopers.com/reciperover/recipe-ingredients/",
+                    {
+                        quantity: ingrediente.quantity,
+                        measure:  ingrediente.measure,
+                        ingredient: ingrediente.ingredient,
+                        recipe: idReceta
+                    },
+                    {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                      }
+                    }
+                )
+            }
+            })
+            
+
+            //Actualizar categorias
+            const idCatBorrar= catOriginales
+                .map(cat=>cat.id)
+                .filter(id=>!categoriasRecetas.some(catR=>catR.id == id))
+
+            console.log("ID de categorias a borrar", idCatBorrar)
+            if(idCatBorrar){
+                await idCatBorrar.map(async(id)=>{
+                    await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/recipes/${idReceta}/categories/${id}/`,
+                        {
+                          headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                          }
+                        }
+                    )
+                })
+            }
+
+            const responseCategorias= await categoriasRecetas.map(async(catR)=>{
+                console.log("Categoria a agregar", catR)
+                await axios.post("https://sandbox.academiadevelopers.com/reciperover/recipe-categories/",
+                    {
+                        category: catR.id,
+                        recipe: idReceta
+                    },
+                    {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                      }
+                    }
+                )
+            })
+
+
+
+            
+        }
+
+    }
+    const filtrarUnicos=(array1, array2)=>{
+        return array1.filter(obj1 => !array2.some(obj2 => objectsAreEqual(obj1, obj2)));
+    }
+    const compararObjetos = (obj1, obj2) => {
+        return Object.keys(obj1).length === Object.keys(obj2).length &&
+               Object.keys(obj1).every(key => obj1[key] === obj2[key]);
+      };
 
     const handleButtonIngrediente=(e)=>{
         e.preventDefault();
@@ -216,29 +346,46 @@ const CrearReceta=()=>{
 
         //Datos de la categoria a editar
         const categoriasData= await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}/categories/`)
-        const categoriasID= categoriasData.data.results.map((c)=>c.id)
+        const categoriasID= categoriasData.data.results.map((c)=>c.category)
+        setCatOriginales(categoriasData.data.results)
         const categoriaMap= new Map(categoriaArray.map(cat => [cat.id, cat]))
         const categoriasAñadir= categoriasID.map(id=> categoriaMap.get((id))).filter(cat=>cat!== undefined)
         categoriasAñadir.map((cat)=>{
             setCategoriasReceta([...categoriasRecetas, cat])
+            
         })
 
         //Datos de los ingredientes a editar
         const ingredientesData= await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}/ingredients/`)
-        const ingredientesID=  ingredientesData.data.results.map((i)=>i.id)
+        const ingredientesID=  ingredientesData.data.results.map((i)=>i.ingredient)
+        console.log("INGREDIETNES ID", ingredientesData)
         const ingredienteMap= new Map(ingredienteArray.map(ing=> [ing.id, ing]))
         const ingredientesAñadir= ingredientesID.map(id=>ingredienteMap.get((id))).filter(ing=>ing!==undefined)
-        ingredientesAñadir.map((ing)=>{
-            setIngredientesReceta([...ingredientesReceta, ing])
-        })
-        console.log(categoriasAñadir)
-        console.log(ingredientesAñadir)
+        console.log("Ingredientes a añadir", ingredientesAñadir)
+
+        const ingredientesFinal = ingredientesData.data.results
+            .filter(recipeIng => ingredientesAñadir.some(ing => ing.id === recipeIng.ingredient))
+            .map(recipeIng => {
+                const ingredient = ingredientesAñadir.find(ing => ing.id === recipeIng.ingredient);
+                return {
+                    measure: recipeIng.measure,
+                    quantity: recipeIng.quantity,
+                    name: ingredient.name,
+                    ingredient: recipeIng.ingredient
+                };
+            });
+            console.log("INGREDIENTES FINAL", ingredientesFinal)
+            ingredientesFinal.forEach((ing) => {
+            setIngredientesReceta((prevIngredientesReceta) => [...prevIngredientesReceta, ing]);
+            setIngOriginales((prevIngOriginales) => [...prevIngOriginales, ing.ingredient]);
+          });
 
         //Datos de los pasos a editar
         const pasosData= await axios.get(`https://sandbox.academiadevelopers.com/reciperover/steps?page_size=1000`)
         const pasosAñadir=pasosData.data.results.filter(paso=>paso.recipe==params.id)
         pasosAñadir.map((paso)=>{
             setPasos([...pasos, paso.instruction])
+            setPasosOriginales([...pasosOriginales, paso])
         })
 
     }
@@ -247,6 +394,8 @@ const CrearReceta=()=>{
         fetchIngredientes()
         
     },[])
+
+    console.log("Ingredientes", ingredientesReceta)
     return(<div className="contenedor">
         <form className="formContainer" onSubmit={handleSubmit}>
             <div className="formItems">
