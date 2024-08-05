@@ -2,9 +2,10 @@ import "./crearReceta.css"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import Modal from "../Modal/Modal"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 const unidades= ["g", "kg", "lbs", "oz", "ml", "l", "cup", "tbsp", "tsp", "u", "pcs", "pkgs", "pinch", "bunch" ]
 const CrearReceta=()=>{
+    const navigate=useNavigate()
     const params=useParams()
     const [modo, setModo]=useState("crear")
     const [receta, setReceta]=useState({
@@ -82,7 +83,7 @@ const CrearReceta=()=>{
                 }
               );
             const idReceta=response.data.id
-            console.log(response.data)
+            
             //Post de ingredientes a la receta
             const responseIngredientes= await ingredientesReceta.map(async(ingR)=>{
                 await axios.post("https://sandbox.academiadevelopers.com/reciperover/recipe-ingredients/",
@@ -133,6 +134,8 @@ const CrearReceta=()=>{
                     }
                 )
             })
+
+            navigate(`/recetas/${idReceta}`)
             
 
         } catch (error) {
@@ -140,7 +143,7 @@ const CrearReceta=()=>{
         }
         }
         else{
-            console.log("MODO EDICION")
+            
             //Actualizar receta
             const response = await axios.put(
                 `https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}`,
@@ -179,7 +182,7 @@ const CrearReceta=()=>{
                    
                 for(var i=0;i<datosIngredientes.length; i++){
                     if(ingrediente.ingredient == datosIngredientes[i].ingredient){
-                        console.log(datosIngredientes[i])
+                        
                         await axios.put(`https://sandbox.academiadevelopers.com/reciperover/recipe-ingredients/${datosIngredientes[i].id}/`,
                             {
                                 ingredient: ingrediente.ingredient,
@@ -197,7 +200,7 @@ const CrearReceta=()=>{
                     }
                 }
             }else{
-                console.log("Es un nuevo ingrediente")
+                
                 await axios.post("https://sandbox.academiadevelopers.com/reciperover/recipe-ingredients/",
                     {
                         quantity: ingrediente.quantity,
@@ -221,7 +224,7 @@ const CrearReceta=()=>{
                 .map(cat=>cat.id)
                 .filter(id=>!categoriasRecetas.some(catR=>catR.id == id))
 
-            console.log("ID de categorias a borrar", idCatBorrar)
+            
             if(idCatBorrar){
                 await idCatBorrar.map(async(id)=>{
                     await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/recipes/${idReceta}/categories/${id}/`,
@@ -251,8 +254,47 @@ const CrearReceta=()=>{
                 )
             })
 
+            //Actualizar pasos
+            const responsePasos=await axios.get("https://sandbox.academiadevelopers.com/reciperover/steps?page_size=1000")
+            const datosPasos=responsePasos.data.results
 
+            const pasosReceta=[]
 
+            for(let paso of datosPasos){
+                if(paso.recipe == idReceta){
+                    pasosReceta.push(paso.id)
+                    }
+                }
+            const responseBorrarPasos=pasosReceta.map(async (id)=>{
+                await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/steps/${id}/`,
+                    {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                      }
+                    }
+                )
+            })
+
+            console.log(pasosReceta)
+            const responsePasos2=await pasos.map(async(paso, index)=>{
+                console.log("PASO =", paso, index)
+                await axios.post("https://sandbox.academiadevelopers.com/reciperover/steps/",
+                    {
+                        order: (index+1),
+                        instruction: paso,
+                        recipe: idReceta
+                    },
+                    {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                      }
+                    }
+                )
+            })
+
+            navigate(`/recetas/${idReceta}`)
             
         }
 
@@ -351,7 +393,7 @@ const CrearReceta=()=>{
         const categoriaMap= new Map(categoriaArray.map(cat => [cat.id, cat]))
         const categoriasAñadir= categoriasID.map(id=> categoriaMap.get((id))).filter(cat=>cat!== undefined)
         categoriasAñadir.map((cat)=>{
-            setCategoriasReceta([...categoriasRecetas, cat])
+            setCategoriasReceta((prevCat)=>[...prevCat, cat])
             
         })
 
@@ -382,10 +424,12 @@ const CrearReceta=()=>{
 
         //Datos de los pasos a editar
         const pasosData= await axios.get(`https://sandbox.academiadevelopers.com/reciperover/steps?page_size=1000`)
+        console.log(pasosData.data.results)
         const pasosAñadir=pasosData.data.results.filter(paso=>paso.recipe==params.id)
+        console.log(pasosAñadir)
         pasosAñadir.map((paso)=>{
-            setPasos([...pasos, paso.instruction])
-            setPasosOriginales([...pasosOriginales, paso])
+            setPasos((prevPasos)=>[...prevPasos, paso.instruction])
+            setPasosOriginales((prevPasosOrg)=>[...prevPasosOrg, paso.instruction])
         })
 
     }
@@ -395,7 +439,6 @@ const CrearReceta=()=>{
         
     },[])
 
-    console.log("Ingredientes", ingredientesReceta)
     return(<div className="contenedor">
         <form className="formContainer" onSubmit={handleSubmit}>
             <div className="formItems">

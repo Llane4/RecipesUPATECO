@@ -10,10 +10,10 @@ const Login=()=>{
 
     useEffect(() => {
       console.log("DATA",data)
-        if (data.isLogged) {
+        if (localStorage.getItem("id")) {
           navigate("/recetas");
         }
-      }, [data.isLogged, navigate]);
+      }, [localStorage.getItem("id"), navigate]);
     const [form, setForm]=useState({
         username: "",
         password:""

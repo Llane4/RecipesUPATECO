@@ -19,6 +19,7 @@ const Pasos=({recetaId})=>{
                     pasosReceta.push(paso)
                     }
                 }
+            pasosReceta.sort((a, b) => a.order - b.order)
             setPasos(pasosReceta)
         } catch (error) {
             
@@ -27,6 +28,7 @@ const Pasos=({recetaId})=>{
         pasosFetch()
 
     }, [recetaID])
+    console.log("PASOS RECETA", pasos)
     return (
         <div>
             <ul>

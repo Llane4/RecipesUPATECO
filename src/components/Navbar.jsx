@@ -3,6 +3,13 @@ import "./navbar.css"
 
 const Navbar=()=>{
     const navigate = useNavigate();
+    const borrarDatos=(e)=>{
+        e.preventDefault()
+        localStorage.removeItem("token")
+        localStorage.removeItem("id")
+        navigate("/")
+      }
+
     return (
         <header className="navheader">
             <nav className="navbar">
@@ -20,6 +27,10 @@ const Navbar=()=>{
                         <button className="navbuttons" onClick={() => navigate('/crear')}>
                             Crear recetas
                         </button>
+                        {localStorage.getItem("id") && <button className="navbuttons" onClick={borrarDatos}>
+                            Logout
+                        </button>}
+                        
                     </div>
                 </div>
             </nav>
