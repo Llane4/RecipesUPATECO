@@ -9,7 +9,7 @@ const Pasos=({recetaId})=>{
     useEffect(()=>{
         const pasosFetch=async()=>{
         try {
-            const responsePasos=await axios.get("https://sandbox.academiadevelopers.com/reciperover/steps?page_size=100")
+            const responsePasos=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/steps?page_size=100`)
             const datosPasos=responsePasos.data.results
 
             const pasosReceta=[]

@@ -33,7 +33,7 @@ const Login=()=>{
     }
 
     function logUser(){
-        axios.post('https://sandbox.academiadevelopers.com/api-auth/', form, {
+        axios.post(`${import.meta.env.VITE_BASE_URL}/api-auth/`, form, {
             headers: {
               'Content-Type': 'application/json'
             }
@@ -44,7 +44,7 @@ const Login=()=>{
               await localStorage.setItem("token", response.data.token)
               await localStorage.setItem("isLogged", true)
               const datos=await axios.get(
-                'https://sandbox.academiadevelopers.com/users/profiles/profile_data/',
+                `${import.meta.env.VITE_BASE_URL}/users/profiles/profile_data/`,
                 {
                   headers: {
                     'Content-Type': 'application/json',
@@ -69,8 +69,7 @@ const Login=()=>{
 
     }
     return (
-        <div style={{marginTop:"52px"}}>
-            <button onClick={borrarDatos}>Borrar datos</button>
+        <div className="contenedor" style={{marginTop:"52px"}}>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username: </label>

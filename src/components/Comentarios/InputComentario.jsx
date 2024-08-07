@@ -16,7 +16,7 @@ const InputComentario=({rID, fetchComentarios})=>{
               })
             try {
                 const response = await axios.post(
-                    'https://sandbox.academiadevelopers.com/reciperover/comments/',
+                    `${import.meta.env.VITE_BASE_URL}/reciperover/comments/`,
                     {
                       content: comentario,
                       recipe: recetaID

@@ -9,14 +9,14 @@ const Ingredientes=({recetaID})=>{
     useEffect(() => {
         const fetchIngredientes = async () => {
           try {
-            const url = `https://sandbox.academiadevelopers.com/reciperover/recipes/${recetaID}/ingredients/`;
+            const url = `${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${recetaID}/ingredients/`;
             const responseIngredientes = await axios.get(url);
             const datosIngredientes = responseIngredientes.data.results;
     
             const datosUnidos = [];
             console.log(datosIngredientes)
             for (let ingrediente of datosIngredientes) {
-              const responseDetalle = await axios.get(`https://sandbox.academiadevelopers.com/reciperover/ingredients/${ingrediente.ingredient}`);
+              const responseDetalle = await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/ingredients/${ingrediente.ingredient}`);
               datosUnidos.push({
                 ...ingrediente,
                 name: responseDetalle.data.name

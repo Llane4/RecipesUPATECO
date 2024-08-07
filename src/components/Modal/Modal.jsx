@@ -2,7 +2,7 @@ import axios from "axios";
 import "./modal.css"
 import { useState } from "react";
 
-const Modal=({tipo})=>{
+const Modal=({tipo, fetchIngredientes})=>{
     const [showModal, setShowModal] = useState(false);
     const [objeto, setObjeto]=useState({
         name:"",
@@ -22,7 +22,7 @@ const Modal=({tipo})=>{
             ruta="categories"
         }
         try {
-            await axios.post(`https://sandbox.academiadevelopers.com/reciperover/${ruta}/`,objeto
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/reciperover/${ruta}/`,objeto
             ,{
                 headers: {
                   'Content-Type': 'application/json',
@@ -30,6 +30,7 @@ const Modal=({tipo})=>{
                 }
               }
             )
+            await fetchIngredientes()
             setShowModal(!showModal)
         } 
             catch (error) {
@@ -47,7 +48,7 @@ const Modal=({tipo})=>{
     }
     return (
         <div>
-            <div onClick={handleOpenModal}>Abrir Modal</div>
+            <div onClick={handleOpenModal}>{tipo && tipo=="Ingrediente"?<h3 className="crearmodal">Nuevo ingrediente</h3>:<h3 className="crearmodal">Nueva categoria</h3>}</div>
             <div className={showModal?"modal-background":"disabled"}>
 
             <div className="modal-item" >

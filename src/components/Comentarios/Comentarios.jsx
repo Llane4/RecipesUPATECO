@@ -13,7 +13,7 @@ const Comentarios= ({recetaId})=>{
     const borrarComentario=async (id)=>{
         console.log(id)
         try {
-            await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/comments/${id}`, {
+            await axios.delete(`${import.meta.env.VITE_BASE_URL}/reciperover/comments/${id}`, {
                 headers: {
                   'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
                   'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ const Comentarios= ({recetaId})=>{
 
     const fetchComentarios=async () =>{
         try {
-            const responseComentarios=await axios.get("https://sandbox.academiadevelopers.com/reciperover/comments/?page=1&page_size=3000")
+            const responseComentarios=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/comments/?page=1&page_size=3000`)
             const datosComentarios=responseComentarios.data.results
 
             const comentariosActual=[]
@@ -35,7 +35,7 @@ const Comentarios= ({recetaId})=>{
             for(let comentario of datosComentarios){
                 if(comentario.recipe == recetaID){
                     console.log("Comentario de la receta actual", comentario.author)
-                    const responseUser=await axios.get(`https://sandbox.academiadevelopers.com/users/profiles/${comentario.author}`, {
+                    const responseUser=await axios.get(`${import.meta.env.VITE_BASE_URL}/users/profiles/${comentario.author}`, {
                         headers: {
                           'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
                           'Content-Type': 'application/json'

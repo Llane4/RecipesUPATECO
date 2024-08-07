@@ -7,7 +7,7 @@ const EditarPage=()=>{
     const navigate=useNavigate()
     const fetchRecetas=async ()=>{
         try {
-            const response=await axios.get("https://sandbox.academiadevelopers.com/reciperover/recipes?page_size=100")
+            const response=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/recipes?page_size=100`)
             const recetasData = await response.data.results
                  .filter((receta) => receta.owner == localStorage.getItem("id"))  
                  .map((receta) => ({
@@ -37,7 +37,7 @@ const EditarPage=()=>{
 
     const borrarReceta=async (recetaID)=>{
         try {
-            await axios.delete(`https://sandbox.academiadevelopers.com/reciperover/recipes/${recetaID}/`,{
+            await axios.delete(`${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${recetaID}/`,{
                 headers: {
                   'Authorization': `Token ${localStorage.getItem("token")}`,
                   'Content-Type': 'application/json'

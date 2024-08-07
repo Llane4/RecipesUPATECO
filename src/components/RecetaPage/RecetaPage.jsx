@@ -17,7 +17,7 @@ const RecetaPage=()=>{
         const fetchReceta=async ()=>{
             try {
                 setIsLoading(true)
-                const respondeReceta=await axios.get(`https://sandbox.academiadevelopers.com/reciperover/recipes/${params.id}`)
+                const respondeReceta=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${params.id}`)
                 const datosReceta=respondeReceta.data
 
                 setReceta({
