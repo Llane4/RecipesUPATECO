@@ -56,6 +56,11 @@ const router = createBrowserRouter([
                 element: <p style={{marginTop: "54px"}}>404 Error</p>
               }]
     },
-]);
+    
+  ],{
+    basename: "/RecipesUPATECO",  
+  }
+
+);
 
 export default router
