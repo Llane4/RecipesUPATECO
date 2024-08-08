@@ -48,7 +48,7 @@ const Modal=({tipo, fetchIngredientes})=>{
     }
     return (
         <div>
-            <div onClick={handleOpenModal}>{tipo && tipo=="Ingrediente"?<h3 className="crearmodal">Nuevo ingrediente</h3>:<h3 className="crearmodal">Nueva categoria</h3>}</div>
+            <div onClick={handleOpenModal}>{tipo && tipo=="Ingrediente"?<h3 className="crearmodal">+</h3>:<h3 className="crearmodal">+</h3>}</div>
             <div className={showModal?"modal-background":"disabled"}>
 
             <div className="modal-item" >

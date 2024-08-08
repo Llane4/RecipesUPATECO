@@ -28,17 +28,17 @@ const CrearReceta=()=>{
 
     })
     const [ingredientesReceta, setIngredientesReceta]=useState([])
+    const [selectIng, setSelectIng]=useState("default")
 
     //Categorias
     const [categorias, setCategorias]=useState([])
     const [catOriginales, setCatOriginales]=useState([])
     const [categoriasRecetas, setCategoriasReceta]=useState([])
-    const [categoriaSeleccionado, setCategoriaSeleccionado]=useState()
+    const [categoriaSeleccionado, setCategoriaSeleccionado]=useState("default")
 
     //Pasos
     const [pasoActual, setPasoActual]=useState()
     const [pasos, setPasos]=useState([])
-    const [pasosOriginales, setPasosOriginales]=useState([])
     const handleChangeReceta=(e)=>{
         const {name, value} = e.target
         setReceta(state => ({
@@ -69,16 +69,16 @@ const CrearReceta=()=>{
     const handleSubmit=async (e)=>{
         e.preventDefault()
         if(modo=="crear"){
-
-       
         try {
             const recetaForm = new FormData();
             recetaForm.append('title', receta.title);
             recetaForm.append('description', receta.description);
-            recetaForm.append('preparation_time', receta.preparation_time);
-            recetaForm.append('cooking_time', receta.cooking_time);
-            recetaForm.append('servings', receta.servings);
-            recetaForm.append('image', receta.image);
+            if(receta.preparation_time)recetaForm.append('preparation_time', receta.preparation_time);
+            if(receta.cooking_time)recetaForm.append('cooking_time', receta.cooking_time);
+            if(receta.servings)recetaForm.append('servings', receta.servings);
+            if(receta.image)recetaForm.append('image', receta.image);
+            
+            
             //Post de la receta base
             console.log("RECETA", receta)
             const response = await axios.post(
@@ -145,8 +145,6 @@ const CrearReceta=()=>{
             })
 
             navigate(`/recetas/${idReceta}`)
-            
-
         } catch (error) {
             
         }
@@ -318,14 +316,18 @@ const CrearReceta=()=>{
 
     const handleButtonIngrediente=(e)=>{
         e.preventDefault();
-        setIngredientesReceta([...ingredientesReceta, ingredienteSeleccionado])
-        setIngredienteSeleccionado({
-            ingredient:"",
-            name:"",
-            quantity:"",
-            measure:"",
-    
-        })
+        console.log(ingredienteSeleccionado)
+        if(ingredienteSeleccionado.name!="" && ingredienteSeleccionado.quantity!="" && ingredienteSeleccionado.measure!=""){
+            setSelectIng("default")
+            setIngredientesReceta([...ingredientesReceta, ingredienteSeleccionado])
+            setIngredienteSeleccionado({
+                ingredient:"default",
+                name:"",
+                quantity:"",
+                measure:"default",
+            })
+        }
+        
     }
 
     const handleChangeCategorias=(e)=>{
@@ -340,7 +342,11 @@ const CrearReceta=()=>{
     }
     const handleButtonCategoria=(e)=>{
         e.preventDefault()
-        setCategoriasReceta([...categoriasRecetas, categoriaSeleccionado])
+        console.log(categoriaSeleccionado)
+        if(categoriaSeleccionado!="default" && categoriaSeleccionado!=""){
+            setCategoriasReceta([...categoriasRecetas, categoriaSeleccionado])
+            setCategoriaSeleccionado("default")
+        }
     }
 
     const handleChangePaso=(e)=>{
@@ -483,20 +489,20 @@ const CrearReceta=()=>{
                 <input type="file" className="formInput" id="fileInput" name="image" onChange={handleChangeImagen} accept="image/*" />
             </div>
             <div>
-            <select style={{marginTop: "30px"}} id="ingredientes" name="ingredient"  onChange={handleChangeIngredienteS}>
-                <option disabled selected>Inserte ingrediente</option>
+            <select value={ingredienteSeleccionado.ingredient} style={{marginTop: "30px"}} id="ingredientes" name="ingredient"  onChange={handleChangeIngredienteS}>
+                <option value="default" disabled defaultValue>Inserte ingrediente</option>
                 {ingredientes && ingredientes.map(ingrediente=>(
                     <option className="ingrediente" key={ingrediente.id} value={ingrediente.id} >{ingrediente.name}</option>
                 ))}
             </select> 
             <input placeholder="Cantidad" name="quantity" value={ingredienteSeleccionado.quantity} onChange={handleChangeIngredienteS}/>
-            <select name="measure"  onChange={handleChangeIngredienteS}>
-                <option disabled selected>Unidad</option>
+            <select  name="measure" value={ingredienteSeleccionado.measure}  onChange={handleChangeIngredienteS}>
+                <option value="default" disabled defaultValue>Unidad</option>
                 {unidades && unidades.map((unidad, index)=>(
                     <option key={index}>{unidad}</option>
                 ))}
             </select> 
-            <button onClick={handleButtonIngrediente}>+</button>
+            <button onClick={handleButtonIngrediente}>Agregar ingrediente</button>
             <Modal tipo={"Ingrediente"} fetchIngredientes={fetchIngredientes}/>
             </div> 
             <div className="ingredientes">
@@ -506,14 +512,15 @@ const CrearReceta=()=>{
                 
             </div>
             <div>
-                Categorias: 
-                <select onChange={handleChangeCategorias}>
-                <option disabled selected>Inserte categoria</option>
+                <h3>Categorias: </h3>
+                <select value={categoriaSeleccionado} onChange={handleChangeCategorias}>
+                <option value="default" disabled defaultValue>Inserte categoria</option>
                 {categorias && categorias.map((categoria, index)=>(
                     <option key={index}>{categoria.name}</option>
                 ))}
                 </select>
-                <button onClick={handleButtonCategoria}>+</button>
+                <br/>
+                <button onClick={handleButtonCategoria}>Agregar categoria</button>
                 <Modal tipo={"Categoria"}/>
             </div>
                 <div className="ingredientes">

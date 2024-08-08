@@ -57,8 +57,8 @@ const RecetaPage=()=>{
         </div>
         <div className="boxinfo">
             <h2 className="info">Porciones: {receta.servings}</h2>
-            <h2 className="info">Tiempo de preparacion: {receta.preparation_time}</h2>
-            <h2 className="info">Tiempo de cocinado: {receta.cooking_time}</h2>
+            <h2 className="info">Tiempo de preparacion: {receta.preparation_time} minutos</h2>
+            <h2 className="info">Tiempo de cocinado: {receta.cooking_time} minutos</h2>
             <h2 className="info">Visitas: {receta.view_count}</h2>
         </div>
         <div className="descrip">
@@ -69,7 +69,7 @@ const RecetaPage=()=>{
             <h2>Pasos a seguir: </h2>
             <Pasos recetaId={receta.id}/>
         </div>
-        <div className="descrip">
+        <div className="descrip" hidden>
            <h2>Video:</h2> 
            <Videotutorial url={"9nh1zUX54pw"}/>
         </div>
