@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import RecetaPage from "../components/RecetaPage/RecetaPage";
 import CrearReceta from "../components/CrearReceta/CrearReceta";
 import EditarPage from "../components/EditarPage/EditarPage";
+import ProfilePage from "../components/ProfilePage/ProfilePage";
 
 
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
                   {
                     path: '/misrecetas',
                     element: <EditarPage />
+                  },
+                  {
+                    path: '/profile',
+                    element: <ProfilePage />
                   },
                   {
                     path: '/crear',

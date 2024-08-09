@@ -27,7 +27,7 @@ const ModalRating = ({recetaID})=>{
             await axios.post(`${import.meta.env.VITE_BASE_URL}/reciperover/ratings/`, rating ,{
                 headers: {
                   'Content-Type': 'application/json',
-                  Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                  Authorization: `Token ${localStorage.getItem("token")}`
                 }
               } )
         }

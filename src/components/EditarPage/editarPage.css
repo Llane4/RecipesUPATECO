@@ -1,5 +1,5 @@
 .contenedoreditar{
-    
+        width: 100vw;
         margin-top: 52px;
         display:flex;
         flex-direction: column;
@@ -7,14 +7,13 @@
         justify-items: center;
         align-content: center;
         align-items: center;
-        background-color: #e0e4ce;
-        min-width: 98.75vw;  
-        min-height: 92vh;
+        background-color: #D9DBF1;
+        
 }
 
 .misRecetas{
         width: 60%;
-        background-color: #8e9ea834;
+        background-color: #49535834;
         border: 2px solid black;
         border-radius: 10px;
         margin: 10px;

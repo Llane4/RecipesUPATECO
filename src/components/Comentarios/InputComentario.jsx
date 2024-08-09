@@ -24,7 +24,7 @@ const InputComentario=({rID, fetchComentarios})=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                   );

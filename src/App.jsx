@@ -11,11 +11,8 @@ function App() {
   const [isOpen, setIsOpen] = useState(0)
   
   return (
-    <div >
-      <Navbar/>
-      <div style={{marginTop:"52px"}}>
-        <Recetas />
-      </div>
+    <div className='prueba'>
+      
      
     </div>
   )

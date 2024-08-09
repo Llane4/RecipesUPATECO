@@ -13,7 +13,7 @@
     justify-content: center;
     justify-items: center;
     align-items: flex-start;
-    background-color: #e0e4ce;
+    background-color: #D0CDD7;
     min-width: 90vw; 
     min-height: 100vh;  
     box-sizing: border-box; 
@@ -43,14 +43,14 @@
     justify-content: center;
     justify-items: center;
     align-content: center;
-    background-color: #e0e4ce;
+    background-color: #D9DBF1;
     
     input{
         margin-top: 40px;
         border: 2px solid #ccc;
         border-radius: 4px;
         font-size: 16px;
-        width: 30%; /* Ajusta el ancho según sea necesario */
+        width: 30%;
         box-sizing: border-box;
     }
 }

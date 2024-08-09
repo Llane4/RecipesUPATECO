@@ -39,6 +39,7 @@ const CrearReceta=()=>{
     //Pasos
     const [pasoActual, setPasoActual]=useState()
     const [pasos, setPasos]=useState([])
+    const [pasosOriginales, setPasosOriginales]=useState([])
     const handleChangeReceta=(e)=>{
         const {name, value} = e.target
         setReceta(state => ({
@@ -87,7 +88,7 @@ const CrearReceta=()=>{
                 {
                   headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                    Authorization: `Token ${localStorage.getItem("token")}`
                   }
                 }
               );
@@ -105,7 +106,7 @@ const CrearReceta=()=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                 )
@@ -121,7 +122,7 @@ const CrearReceta=()=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                 )
@@ -138,7 +139,7 @@ const CrearReceta=()=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                 )
@@ -158,7 +159,7 @@ const CrearReceta=()=>{
                 {
                   headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                    Authorization: `Token ${localStorage.getItem("token")}`
                   }
                 }
             );
@@ -177,7 +178,7 @@ const CrearReceta=()=>{
                             {
                                 headers: {
                                   'Content-Type': 'application/json',
-                                  Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                                  Authorization: `Token ${localStorage.getItem("token")}`
                                 }
                             }
                         )
@@ -200,7 +201,7 @@ const CrearReceta=()=>{
                             {
                                 headers: {
                                   'Content-Type': 'application/json',
-                                  Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                                  Authorization: `Token ${localStorage.getItem("token")}`
                                 }
                             }
                         )
@@ -218,7 +219,7 @@ const CrearReceta=()=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                 )
@@ -238,7 +239,7 @@ const CrearReceta=()=>{
                         {
                           headers: {
                             'Content-Type': 'application/json',
-                            Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                            Authorization: `Token ${localStorage.getItem("token")}`
                           }
                         }
                     )
@@ -255,7 +256,7 @@ const CrearReceta=()=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                 )
@@ -277,7 +278,7 @@ const CrearReceta=()=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                 )
@@ -295,7 +296,7 @@ const CrearReceta=()=>{
                     {
                       headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Token ${import.meta.env.VITE_API_TOKEN}`
+                        Authorization: `Token ${localStorage.getItem("token")}`
                       }
                     }
                 )
@@ -441,9 +442,11 @@ const CrearReceta=()=>{
         //Datos de los pasos a editar
         const pasosData= await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/steps?page_size=1000`)
         console.log(pasosData.data.results)
-        const pasosAñadir=pasosData.data.results.filter(paso=>paso.recipe==params.id)
+        const pasosAñadir=await pasosData.data.results.filter(paso=>paso.recipe==params.id)
         console.log(pasosAñadir)
-        pasosAñadir.map((paso)=>{
+        const pasosOrdenados = pasosAñadir.sort((a, b) => a.order - b.order);
+        pasosOrdenados.map((paso)=>{
+            console.log(paso)
             setPasos((prevPasos)=>[...prevPasos, paso.instruction])
             setPasosOriginales((prevPasosOrg)=>[...prevPasosOrg, paso.instruction])
         })
@@ -465,7 +468,7 @@ const CrearReceta=()=>{
             [name]: e.target.files[0]
         }))
     }
-
+    console.log("PASOS", pasos)
     return(<div className="contenedorpadre">
         <div className="formContainer" >
         <form onSubmit={handleSubmit}>
@@ -476,13 +479,13 @@ const CrearReceta=()=>{
                 <label>Descripcion:</label> <input className="formInput" name="description" value={receta.description} onChange={handleChangeReceta}/>
             </div>
             <div className="formItems">
-                <label>Tiempo de preparacion: </label><input className="formInput" required name="preparation_time" value={receta.preparation_time} onChange={handleChangeReceta}/>
+                <label>Tiempo de preparacion: </label><input type="number" min="0" className="formInput" required name="preparation_time" value={receta.preparation_time} onChange={handleChangeReceta}/>
             </div>
             <div className="formItems">
-                <label>Tiempo de cocinado: </label><input className="formInput"  name="cooking_time" value={receta.cooking_time} onChange={handleChangeReceta}/>
+                <label>Tiempo de cocinado: </label><input type="number" min="0" className="formInput"  name="cooking_time" value={receta.cooking_time} onChange={handleChangeReceta}/>
             </div>
             <div className="formItems">
-                <label>Porciones: </label><input className="formInput" name="servings" value={receta.servings} onChange={handleChangeReceta}/>
+                <label>Porciones: </label><input className="formInput" type="number" min="0" name="servings" value={receta.servings} onChange={handleChangeReceta}/>
             </div>
             <div className="formItems">
                 <label htmlFor="fileInput">Selecciona una imagen:</label>
@@ -495,7 +498,7 @@ const CrearReceta=()=>{
                     <option className="ingrediente" key={ingrediente.id} value={ingrediente.id} >{ingrediente.name}</option>
                 ))}
             </select> 
-            <input placeholder="Cantidad" name="quantity" value={ingredienteSeleccionado.quantity} onChange={handleChangeIngredienteS}/>
+            <input placeholder="Cantidad" type="number" min="0" name="quantity" value={ingredienteSeleccionado.quantity} onChange={handleChangeIngredienteS}/>
             <select  name="measure" value={ingredienteSeleccionado.measure}  onChange={handleChangeIngredienteS}>
                 <option value="default" disabled defaultValue>Unidad</option>
                 {unidades && unidades.map((unidad, index)=>(

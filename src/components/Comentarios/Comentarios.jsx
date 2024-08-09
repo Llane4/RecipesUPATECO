@@ -15,7 +15,7 @@ const Comentarios= ({recetaId})=>{
         try {
             await axios.delete(`${import.meta.env.VITE_BASE_URL}/reciperover/comments/${id}`, {
                 headers: {
-                  'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
+                  'Authorization': `Token ${localStorage.getItem("token")}`,
                   'Content-Type': 'application/json'
                 }
               });
@@ -37,7 +37,7 @@ const Comentarios= ({recetaId})=>{
                     console.log("Comentario de la receta actual", comentario.author)
                     const responseUser=await axios.get(`${import.meta.env.VITE_BASE_URL}/users/profiles/${comentario.author}`, {
                         headers: {
-                          'Authorization': `Token ${import.meta.env.VITE_API_TOKEN}`,
+                          'Authorization': `Token ${localStorage.getItem("token")}`,
                           'Content-Type': 'application/json'
                         }
                       })

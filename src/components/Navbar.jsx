@@ -21,11 +21,11 @@ const Navbar=()=>{
                         <button className="navbuttons" onClick={() => navigate('/recetas')}>
                             Recetas
                         </button>
-                        <button className="navbuttons" onClick={() => navigate('/misrecetas')}>
-                            Mis recetas
-                        </button>
                         <button className="navbuttons" onClick={() => navigate('/crear')}>
                             Crear recetas
+                        </button>
+                        <button className="navbuttons" onClick={() => navigate('/profile')}>
+                            Mi perfil
                         </button>
                         {localStorage.getItem("id") && <button className="navbuttons" onClick={borrarDatos}>
                             Logout
