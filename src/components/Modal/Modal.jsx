@@ -2,7 +2,7 @@ import axios from "axios";
 import "./modal.css"
 import { useState } from "react";
 
-const Modal=({tipo, fetchIngredientes})=>{
+const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
     const [showModal, setShowModal] = useState(false);
     const [objeto, setObjeto]=useState({
         name:"",
@@ -15,21 +15,40 @@ const Modal=({tipo, fetchIngredientes})=>{
         if(objeto.name=="")return
         e.preventDefault()
         var ruta=""
+        var metodo="POST"
         if(tipo== "Ingrediente"){
             ruta="ingredients"
         }
         else{
             ruta="categories"
         }
+        switch (tipo) {
+            case "Ingrediente":
+                ruta="ingredients"
+                break;
+            case "Categoria":
+                ruta="categories"
+                break;
+            case "Comentario":
+                ruta=`comments/${commentID}`
+                metodo="PUT"
+            default:
+                break;
+        }
         try {
-            await axios.post(`${import.meta.env.VITE_BASE_URL}/reciperover/${ruta}/`,objeto
-            ,{
+            await axios({
+                method: metodo,
+                url: `${import.meta.env.VITE_BASE_URL}/reciperover/${ruta}/`,
+                data: {
+                    recipe: recipeID,
+                    content: objeto.name
+                },
                 headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Token ${localStorage.getItem("token")}`
+                    'Content-Type': 'application/json',
+                    Authorization: `Token ${localStorage.getItem("token")}`
                 }
-              }
-            )
+            })
+            
             await fetchIngredientes()
             setShowModal(!showModal)
         } 
@@ -47,8 +66,8 @@ const Modal=({tipo, fetchIngredientes})=>{
           });
     }
     return (
-        <div>
-            <div onClick={handleOpenModal}>{tipo && tipo=="Ingrediente"?<h3 className="crearmodal">+</h3>:<h3 className="crearmodal">+</h3>}</div>
+        <>
+            <button onClick={handleOpenModal}>{tipo}</button>
             <div className={showModal?"modal-background":"disabled"}>
 
             <div className="modal-item" >
@@ -62,7 +81,7 @@ const Modal=({tipo, fetchIngredientes})=>{
             <button type="button" onClick={handleSubmit}>Enviar</button>
             </div>
             </div>
-        </div>
+        </>
     )
 }
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Modal from "../Modal/Modal";
 
 const MisComentarios=()=>{
     const navigate=useNavigate()
@@ -43,6 +44,7 @@ const MisComentarios=()=>{
                 <div className="item" key={index}>
                     <div ><h2 style={{cursor:"pointer"}}onClick={() => navigate(`/recetas/${rec.recipe}`)}>{rec.content}</h2></div>
                     <div className="misBotones">
+                        <Modal tipo="Comentario" fetchIngredientes={fetchComentarios} recipeID={rec.recipe} commentID={rec.id}/>
                         <button onClick={()=>borrarComentario(rec.id)}>Borrar</button>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import "./modal.css"
 import axios from "axios";
 
 
-const ModalRating = ({recetaID})=>{
+const ModalRating = ({recetaID, fetchComments})=>{
     const [showModal, setShowModal] = useState(false);
     const [rating, setRating]=useState({
         rating:"",
@@ -16,7 +16,7 @@ const ModalRating = ({recetaID})=>{
     const handleSubmit=async (e)=>{
         console.log("SUBMIT")
         console.log(rating)
-        const fetchRating=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/ratings/`)
+        const fetchRating=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/ratings/?page_size=1000`)
         console.log(fetchRating.data.results)
         const envioPuntuacioon= fetchRating.data.results.filter(e=>e.author==localStorage.getItem("id") && e.recipe==recetaID)
         console.log(envioPuntuacioon)
@@ -30,6 +30,8 @@ const ModalRating = ({recetaID})=>{
                   Authorization: `Token ${localStorage.getItem("token")}`
                 }
               } )
+            handleOpenModal()
+            fetchComments()
         }
     }
 

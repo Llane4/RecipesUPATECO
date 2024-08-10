@@ -23,8 +23,16 @@ const router = createBrowserRouter([
                 index: true
               },
               {
+                path: '/recetas',
+                element:  <Recetas /> 
+            },
+              {
                 element: <ProtectedRoute/>,
                 children: [
+                  {
+                    path: '/recetas/:id',
+                    element: <RecetaPage />
+                  },
                   {
                     path: '/editar/:id',
                     element: <CrearReceta />
@@ -41,19 +49,7 @@ const router = createBrowserRouter([
                     path: '/crear',
                     element: <CrearReceta />
                   },
-                  {
-                    path: '/recetas',
-                    children: [
-                      {
-                          index: true,
-                          element: <Recetas />
-                      },
-                      {
-                          path: "/recetas/:id",
-                          element: <RecetaPage />
-                      },
-                  ]
-                  }
+                  
                 ]
               },
               {
