@@ -10,10 +10,6 @@ const InputComentario=({rID, fetchComentarios})=>{
         e.preventDefault()
         const sinEspacios=comentario.trim()
         if(sinEspacios){
-            console.log({
-                content: comentario,
-                recipe: recetaID
-              })
             try {
                 const response = await axios.post(
                     `${import.meta.env.VITE_BASE_URL}/reciperover/comments/`,
@@ -29,13 +25,13 @@ const InputComentario=({rID, fetchComentarios})=>{
                     }
                   );
                 fetchComentarios()
-                console.log(response.data)
+               
             } catch (error) {
                 console.log(error)
             }
             setComentario("")
         }else{
-            console.log("Comentario vacio")
+            alert("No se puede enviar comentarios vacios.")
         }
     }
     const handleChange=(e)=>{

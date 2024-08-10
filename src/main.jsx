@@ -4,7 +4,6 @@ import App from './App.jsx'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import router from './config/router.jsx'
-import Context from './config/context.jsx'
 import ContextProvider from './config/ContextProvider.jsx'
 
 

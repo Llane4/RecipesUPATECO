@@ -24,7 +24,6 @@ const EditarPage=()=>{
                    locations: receta.locations,
                    categories: receta.categories
                  }));
-            console.log(recetasData)
             setMisRecetas(recetasData)
         } catch (error) {
             
@@ -48,7 +47,6 @@ const EditarPage=()=>{
             
         }
     }
-    console.log(misRecetas)
     return (<div className="contenedoreditar">
         <h2>Mis recetas</h2>
         <div className="misRecetas">

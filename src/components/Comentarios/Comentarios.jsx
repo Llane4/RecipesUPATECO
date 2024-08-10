@@ -34,7 +34,6 @@ const Comentarios= ({recetaId})=>{
 
             for(let comentario of datosComentarios){
                 if(comentario.recipe == recetaID){
-                    console.log("Comentario de la receta actual", comentario.author)
                     const responseUser=await axios.get(`${import.meta.env.VITE_BASE_URL}/users/profiles/${comentario.author}`, {
                         headers: {
                           'Authorization': `Token ${localStorage.getItem("token")}`,
@@ -58,7 +57,7 @@ const Comentarios= ({recetaId})=>{
         
         fetchComentarios()
     },[])
-    console.log(comment)
+   
 
     return (
         <div>

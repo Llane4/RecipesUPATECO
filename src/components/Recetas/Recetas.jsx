@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "./recetas.css"
-import Context from "../config/context";
-import RecetaCard from "./RecetaCard";
-import Categoria from "./Categoria/Categoria";
+import Context from "../../config/context";
+import RecetaCard from "../RecetaCard/RecetaCard";
+import Categoria from "../Categoria/Categoria";
 
 const Recetas=()=>{
     const data= useContext(Context)
@@ -17,7 +17,6 @@ const Recetas=()=>{
     useEffect( ()=>{
         axios.get(url)
             .then(async response => {
-                console.log(response.data.length);
                   const categoriasdatos=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/categories`)
                   const recetasDatos=response.data.results.map(receta=>({
                     id: receta.id,

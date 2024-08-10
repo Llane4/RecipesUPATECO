@@ -81,7 +81,6 @@ const CrearReceta=()=>{
             
             
             //Post de la receta base
-            console.log("RECETA", receta)
             const response = await axios.post(
                 `${import.meta.env.VITE_BASE_URL}/reciperover/recipes/`,
                 recetaForm,
@@ -247,7 +246,6 @@ const CrearReceta=()=>{
             }
 
             const responseCategorias= await categoriasRecetas.map(async(catR)=>{
-                console.log("Categoria a agregar", catR)
                 await axios.post(`${import.meta.env.VITE_BASE_URL}/reciperover/recipe-categories/`,
                     {
                         category: catR.id,

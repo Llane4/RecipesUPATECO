@@ -12,7 +12,6 @@ const MisComentarios=()=>{
         const comentariosData=responseComentarios.data.results
         for(var i=0;i<comentariosData.length;i++){
             if(comentariosData[i].author==localStorage.getItem("id")){
-                console.log("Comentario", comentariosData[i].content)
                 comentariosAux.push(comentariosData[i])
             }
         }
@@ -23,7 +22,6 @@ const MisComentarios=()=>{
     },[])
 
     const borrarComentario=async (id)=>{
-        console.log(id)
         try {
             await axios.delete(`${import.meta.env.VITE_BASE_URL}/reciperover/comments/${id}`, {
                 headers: {
@@ -36,7 +34,6 @@ const MisComentarios=()=>{
             console.log(error)
         }
     }
-    console.log(comentarios)
     return (<div className="contenedoreditar">
         <h2>Mis comentarios</h2>
         <div className="misRecetas">

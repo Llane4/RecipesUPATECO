@@ -1,10 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import NavbarLayout from "../components/NavbarLayout";
-import Recetas from "../components/Recetas";
-import Categorias from "../components/Categorias";
-import Login from "../components/Login";
-import { useContext } from "react";
-import Context from "./context";
+import NavbarLayout from "../components/Navbar/NavbarLayout";
+import Recetas from "../components/Recetas/Recetas";
+import Login from "../components/Login/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import RecetaPage from "../components/RecetaPage/RecetaPage";
 import CrearReceta from "../components/CrearReceta/CrearReceta";

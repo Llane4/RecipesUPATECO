@@ -1,6 +1,6 @@
 import { useState,useEffect, useContext } from "react";
 import axios from "axios";
-import Context from "../config/context";
+import Context from "../../config/context";
 import { useNavigate } from "react-router-dom";
 
 
@@ -9,7 +9,6 @@ const Login=()=>{
     const navigate=useNavigate()
 
     useEffect(() => {
-      console.log("DATA",data)
         if (localStorage.getItem("id")) {
           navigate("/recetas");
         }
@@ -52,7 +51,6 @@ const Login=()=>{
                   }
                 }
               )
-              console.log(datos.data)
                 await localStorage.setItem("id", datos.data.user__id)
                 await data.setUserData(datos.data)
                 await data.login()

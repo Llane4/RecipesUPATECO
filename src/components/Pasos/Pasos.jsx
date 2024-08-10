@@ -5,7 +5,6 @@ import axios from "axios"
 const Pasos=({recetaId})=>{
     const recetaID=recetaId
     const [pasos, setPasos]=useState([])
-    //Hacer fetch a los pasos, conseguir los que corresponden a mi receta, y ordenar los pasos dependiendo del order
     useEffect(()=>{
         const pasosFetch=async()=>{
         try {
@@ -28,7 +27,6 @@ const Pasos=({recetaId})=>{
         pasosFetch()
 
     }, [recetaID])
-    console.log("PASOS RECETA", pasos)
     return (
         <div>
             <ul>

@@ -5,9 +5,7 @@ import { useParams } from "react-router-dom"
 import Comentarios from "../Comentarios/Comentarios"
 import Pasos from "../Pasos/Pasos"
 import Ingredientes from "../Ingredientes/Ingredientes"
-import Videotutorial from "../Videotutorial/Videotutorial"
 import Puntuacion from "../Puntuacion/Puntuacion"
-import ModalRating from "../Modal/ModalRating"
 
 const RecetaPage=()=>{
     const params = useParams();

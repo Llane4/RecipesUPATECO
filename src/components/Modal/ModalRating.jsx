@@ -14,12 +14,8 @@ const ModalRating = ({recetaID, fetchComments})=>{
     }
 
     const handleSubmit=async (e)=>{
-        console.log("SUBMIT")
-        console.log(rating)
         const fetchRating=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/ratings/?page_size=1000`)
-        console.log(fetchRating.data.results)
         const envioPuntuacioon= fetchRating.data.results.filter(e=>e.author==localStorage.getItem("id") && e.recipe==recetaID)
-        console.log(envioPuntuacioon)
         if(envioPuntuacioon.length>0){
             alert("Ya enviaste una puntuacion")
             handleOpenModal()

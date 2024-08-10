@@ -7,7 +7,6 @@ const ProtectedRoute = ({children}) => {
     const navigate=useNavigate()
     const data=useContext(Context)
     let login=localStorage.getItem("token")
-    console.log(login?true:false)
     return login ? <Outlet/> : <Navigate to="/" />;
 };
 

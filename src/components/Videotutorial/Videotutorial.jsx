@@ -2,8 +2,8 @@ import { useState } from "react"
 import "./videotutorial.css"
 
 const Videotutorial=({url})=>{
+    //Este componente no se uso al final porque Recetas no tiene una propiedad que sea video
     const videoUrl = `https://www.youtube.com/embed/${url}`;
-    console.log(videoUrl)
     return (<div className="video-container">
         <iframe
         width={560}

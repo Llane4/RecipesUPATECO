@@ -22,7 +22,6 @@ const ProfilePage=()=>{
     useEffect(()=>{
         fetchUser()
     }, [])
-    console.log(user)
     return (isLoading?
         <div className="profile-container">
           <div className="profile-header">
