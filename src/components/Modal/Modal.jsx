@@ -16,12 +16,7 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
         e.preventDefault()
         var ruta=""
         var metodo="POST"
-        if(tipo== "Ingrediente"){
-            ruta="ingredients"
-        }
-        else{
-            ruta="categories"
-        }
+        var datos=objeto
         switch (tipo) {
             case "Ingrediente":
                 ruta="ingredients"
@@ -32,6 +27,10 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
             case "Comentario":
                 ruta=`comments/${commentID}`
                 metodo="PUT"
+                datos={
+                    recipe: recipeID,
+                    content: objeto.name
+                }
             default:
                 break;
         }
@@ -39,10 +38,7 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
             await axios({
                 method: metodo,
                 url: `${import.meta.env.VITE_BASE_URL}/reciperover/${ruta}/`,
-                data: {
-                    recipe: recipeID,
-                    content: objeto.name
-                },
+                data: datos,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Token ${localStorage.getItem("token")}`

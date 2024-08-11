@@ -15,7 +15,7 @@ const Navbar=()=>{
             <nav className="navbar">
                 <div className="navcontainer">
                     <a>
-                        Hola
+                        
                     </a>
                     <div className="navcontainerbuttons"   >
                         <button className="navbuttons" onClick={() => navigate('/recetas')}>

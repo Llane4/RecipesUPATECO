@@ -282,9 +282,8 @@ const CrearReceta=()=>{
                 )
             })
 
-            console.log(pasosReceta)
+          
             const responsePasos2=await pasos.map(async(paso, index)=>{
-                console.log("PASO =", paso, index)
                 await axios.post(`${import.meta.env.VITE_BASE_URL}/reciperover/steps/`,
                     {
                         order: (index+1),
@@ -305,17 +304,9 @@ const CrearReceta=()=>{
         }
 
     }
-    const filtrarUnicos=(array1, array2)=>{
-        return array1.filter(obj1 => !array2.some(obj2 => objectsAreEqual(obj1, obj2)));
-    }
-    const compararObjetos = (obj1, obj2) => {
-        return Object.keys(obj1).length === Object.keys(obj2).length &&
-               Object.keys(obj1).every(key => obj1[key] === obj2[key]);
-      };
-
+    
     const handleButtonIngrediente=(e)=>{
         e.preventDefault();
-        console.log(ingredienteSeleccionado)
         if(ingredienteSeleccionado.name!="" && ingredienteSeleccionado.quantity!="" && ingredienteSeleccionado.measure!=""){
             setSelectIng("default")
             setIngredientesReceta([...ingredientesReceta, ingredienteSeleccionado])
@@ -331,7 +322,6 @@ const CrearReceta=()=>{
 
     const handleChangeCategorias=(e)=>{
         e.preventDefault()
-        console.log(e.target.value)
         const idCat=categorias.find(categoria => categoria.name == e.target.value)
         setCategoriaSeleccionado({
             name: e.target.value,
@@ -341,7 +331,6 @@ const CrearReceta=()=>{
     }
     const handleButtonCategoria=(e)=>{
         e.preventDefault()
-        console.log(categoriaSeleccionado)
         if(categoriaSeleccionado!="default" && categoriaSeleccionado!=""){
             setCategoriasReceta([...categoriasRecetas, categoriaSeleccionado])
             setCategoriaSeleccionado("default")
@@ -359,11 +348,9 @@ const CrearReceta=()=>{
     }
 
     const borrarElemento=({tipo, id})=>{
-        console.log(tipo, id)
         switch (tipo) {
             case "Ingrediente":
                 var indexAEliminar=ingredientesReceta.findIndex((e)=>e.ingredient==id)
-                console.log(indexAEliminar)
                 setIngredientesReceta([...ingredientesReceta.slice(0,indexAEliminar), ...ingredientesReceta.slice(indexAEliminar+=1, ingredientesReceta.lenght)]) 
                 break;
             case "Categoria":
@@ -380,21 +367,25 @@ const CrearReceta=()=>{
         }
 
     const fetchIngredientes=async ()=>{
+        let todosIngredientes=[]
+        let url=`${import.meta.env.VITE_BASE_URL}/reciperover/ingredients?page_size=1000`
         
-        const ingredientesData=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/ingredients?page_size=100`)
         const categoriasData=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/categories`)
+
+        while(url){
+            const ingredientesData=await axios.get(url)
+            todosIngredientes=[...todosIngredientes, ...ingredientesData.data.results]
+            url=ingredientesData.data.next
+        }
         setCategorias(categoriasData.data.results)
-        setIngredientes(ingredientesData.data.results)
+        setIngredientes(todosIngredientes)
         if(params.id ){
-            console.log("En modo editar")
-            fetchRecetaAEditar(categoriasData.data.results, ingredientesData.data.results)
+            fetchRecetaAEditar(categoriasData.data.results, todosIngredientes)
             setModo("editar")
         }
         }
 
     const fetchRecetaAEditar=async(categoriaArray, ingredienteArray)=>{
-        console.log("Categorias", categorias)
-        console.log("Ingredientes", ingredientes)
         const recetaData=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${params.id}/`)
         const {title, description, preparation_time, cooking_time, servings}=recetaData.data
         setReceta({
@@ -415,11 +406,9 @@ const CrearReceta=()=>{
         //Datos de los ingredientes a editar
         const ingredientesData= await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${params.id}/ingredients/`)
         const ingredientesID=  ingredientesData.data.results.map((i)=>i.ingredient)
-        console.log("INGREDIETNES ID", ingredientesData)
         const ingredienteMap= new Map(ingredienteArray.map(ing=> [ing.id, ing]))
         const ingredientesAñadir= ingredientesID.map(id=>ingredienteMap.get((id))).filter(ing=>ing!==undefined)
-        console.log("Ingredientes a añadir", ingredientesAñadir)
-
+        
         const ingredientesFinal = ingredientesData.data.results
             .filter(recipeIng => ingredientesAñadir.some(ing => ing.id === recipeIng.ingredient))
             .map(recipeIng => {
@@ -431,7 +420,7 @@ const CrearReceta=()=>{
                     ingredient: recipeIng.ingredient
                 };
             });
-            console.log("INGREDIENTES FINAL", ingredientesFinal)
+          
             ingredientesFinal.forEach((ing) => {
             setIngredientesReceta((prevIngredientesReceta) => [...prevIngredientesReceta, ing]);
             setIngOriginales((prevIngOriginales) => [...prevIngOriginales, ing.ingredient]);
@@ -439,12 +428,9 @@ const CrearReceta=()=>{
 
         //Datos de los pasos a editar
         const pasosData= await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/steps?page_size=1000`)
-        console.log(pasosData.data.results)
         const pasosAñadir=await pasosData.data.results.filter(paso=>paso.recipe==params.id)
-        console.log(pasosAñadir)
         const pasosOrdenados = pasosAñadir.sort((a, b) => a.order - b.order);
         pasosOrdenados.map((paso)=>{
-            console.log(paso)
             setPasos((prevPasos)=>[...prevPasos, paso.instruction])
             setPasosOriginales((prevPasosOrg)=>[...prevPasosOrg, paso.instruction])
         })
@@ -466,7 +452,6 @@ const CrearReceta=()=>{
             [name]: e.target.files[0]
         }))
     }
-    console.log("PASOS", pasos)
     return(<div className="contenedorpadre">
         <div className="formContainer" >
         <form onSubmit={handleSubmit}>

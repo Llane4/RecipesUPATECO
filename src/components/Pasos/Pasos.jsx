@@ -1,9 +1,11 @@
 import "./pasos.css"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axios from "axios"
+import Context from "../../config/context"
 
-const Pasos=({recetaId})=>{
-    const recetaID=recetaId
+const Pasos=()=>{
+    const data=useContext(Context)
+    const recetaID=data.recetaID
     const [pasos, setPasos]=useState([])
     useEffect(()=>{
         const pasosFetch=async()=>{

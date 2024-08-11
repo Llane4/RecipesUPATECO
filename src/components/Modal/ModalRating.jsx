@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./modal.css"
 import axios from "axios";
+import Context from "../../config/context";
 
 
-const ModalRating = ({recetaID, fetchComments})=>{
+const ModalRating = ({fetchComments})=>{
+    const data=useContext(Context)
     const [showModal, setShowModal] = useState(false);
     const [rating, setRating]=useState({
         rating:"",
-        recipe:recetaID
+        recipe:data.recetaID
     })
     const handleOpenModal=()=>{
         setShowModal(!showModal)
@@ -15,9 +17,9 @@ const ModalRating = ({recetaID, fetchComments})=>{
 
     const handleSubmit=async (e)=>{
         const fetchRating=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/ratings/?page_size=1000`)
-        const envioPuntuacioon= fetchRating.data.results.filter(e=>e.author==localStorage.getItem("id") && e.recipe==recetaID)
+        const envioPuntuacioon= fetchRating.data.results.filter(e=>e.author==localStorage.getItem("id") && e.recipe==data.recetaID)
         if(envioPuntuacioon.length>0){
-            alert("Ya enviaste una puntuacion")
+            alert("Ya enviaste una puntuacion.")
             handleOpenModal()
         } else {
             await axios.post(`${import.meta.env.VITE_BASE_URL}/reciperover/ratings/`, rating ,{

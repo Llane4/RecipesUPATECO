@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import "./ingredientes.css"
 import axios from "axios"
+import Context from "../../config/context"
 
 
-const Ingredientes=({recetaID})=>{
+const Ingredientes=()=>{
+    const data=useContext(Context)
     const [ingredientes, setIngredientes]=useState([])
 
     useEffect(() => {
         const fetchIngredientes = async () => {
           try {
-            const url = `${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${recetaID}/ingredients/`;
+            const url = `${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${data.recetaID}/ingredients/`;
             const responseIngredientes = await axios.get(url);
             const datosIngredientes = responseIngredientes.data.results;
     
@@ -29,7 +31,7 @@ const Ingredientes=({recetaID})=>{
         };
     
         fetchIngredientes();
-      }, [recetaID]);
+      }, [data.recetaID]);
     return (
         <div>
             {ingredientes && ingredientes.map((ingrediente, index)=>(

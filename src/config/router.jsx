@@ -7,6 +7,7 @@ import RecetaPage from "../components/RecetaPage/RecetaPage";
 import CrearReceta from "../components/CrearReceta/CrearReceta";
 import EditarPage from "../components/EditarPage/EditarPage";
 import ProfilePage from "../components/ProfilePage/ProfilePage";
+import ContextProvider from "./ContextProvider";
 
 
 
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: '/recetas/:id',
-                    element: <RecetaPage />
+                    element: <ContextProvider><RecetaPage /></ContextProvider>
                   },
                   {
                     path: '/editar/:id',

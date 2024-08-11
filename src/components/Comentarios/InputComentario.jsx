@@ -1,9 +1,11 @@
 import axios from "axios"
 import "./inputComentario.css"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import Context from "../../config/context"
 
-const InputComentario=({rID, fetchComentarios})=>{
-    const recetaID=rID
+const InputComentario=({fetchComentarios})=>{
+    const data=useContext(Context)
+    const recetaID=data.recetaID
     const [comentario, setComentario]=useState("")
 
     const handleSubmit=async(e)=>{

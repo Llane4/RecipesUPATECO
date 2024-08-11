@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import "./recetapage.css"
 import axios from "axios"
 import { useParams } from "react-router-dom"
@@ -6,8 +6,11 @@ import Comentarios from "../Comentarios/Comentarios"
 import Pasos from "../Pasos/Pasos"
 import Ingredientes from "../Ingredientes/Ingredientes"
 import Puntuacion from "../Puntuacion/Puntuacion"
+import Context from "../../config/context"
+
 
 const RecetaPage=()=>{
+    const data=useContext(Context)
     const params = useParams();
     const [receta, setReceta]=useState({})
     const [isLoading, setIsLoading]=useState(true)
@@ -19,7 +22,7 @@ const RecetaPage=()=>{
                 setIsLoading(true)
                 const respondeReceta=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/recipes/${params.id}`)
                 const datosReceta=respondeReceta.data
-
+                data.setRecetaID(params.id)
                 setReceta({
                     id: datosReceta.id,
                     title: datosReceta.title,
@@ -48,9 +51,10 @@ const RecetaPage=()=>{
     if (isLoading) {
         return <div className="contenedor"><h2>Cargando...</h2></div>
     }
+    console.log("DATA", data.recetaID)
     return (
         (receta && <div className="contenedor">
-        <h2>{receta.title} <Puntuacion recetaID={receta.id}/></h2>
+        <h2>{receta.title} <Puntuacion/></h2>
         
         <img src={receta.image?receta.image:"https://cdn0.recetasgratis.net/es/posts/6/2/9/galletas_con_chispas_de_chocolate_caseras_35926_600.webp"}/>
         <div className="descrip">
@@ -65,14 +69,14 @@ const RecetaPage=()=>{
         
         <div className="descrip">
             <h2>Ingredientes: </h2>
-                <Ingredientes recetaID={receta.id}/>
+                <Ingredientes/>
         </div>
         <div className="descrip">
             <h2>Pasos a seguir: </h2>
-            <Pasos recetaId={receta.id}/>
+            <Pasos/>
         </div>
         <div className="descrip">
-            <Comentarios recetaId={receta.id}/>
+            <Comentarios/>
 
         </div>
     </div>))

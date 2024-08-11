@@ -5,10 +5,10 @@ import InputComentario from "./InputComentario"
 import Context from "../../config/context"
 
 
-const Comentarios= ({recetaId})=>{
+const Comentarios= ()=>{
     const datos=useContext(Context)
     const [comment, setComment]=useState([])
-    const recetaID=recetaId
+    const recetaID=datos.recetaID
 
     const borrarComentario=async (id)=>{
         console.log(id)
@@ -62,7 +62,7 @@ const Comentarios= ({recetaId})=>{
     return (
         <div>
             <h2>Comentarios: </h2>
-            <InputComentario rID={recetaID} fetchComentarios={fetchComentarios}/>
+            <InputComentario fetchComentarios={fetchComentarios}/>
             {
                 comment && comment.map((comentario, index)=>(
                     <div    className="box"  key={index}>

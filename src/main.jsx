@@ -8,7 +8,7 @@ import ContextProvider from './config/ContextProvider.jsx'
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <ContextProvider>
+  
     <RouterProvider router={router} />
-  </ContextProvider>
+  
 );

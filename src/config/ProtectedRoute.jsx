@@ -4,8 +4,6 @@ import Context from './context';
 
 
 const ProtectedRoute = ({children}) => {
-    const navigate=useNavigate()
-    const data=useContext(Context)
     let login=localStorage.getItem("token")
     return login ? <Outlet/> : <Navigate to="/" />;
 };

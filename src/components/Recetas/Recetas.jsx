@@ -1,12 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./recetas.css"
-import Context from "../../config/context";
 import RecetaCard from "../RecetaCard/RecetaCard";
 import Categoria from "../Categoria/Categoria";
 
 const Recetas=()=>{
-    const data= useContext(Context)
 
     const [recetas, setRecetas]=useState([])
     const [filtroRecetas, setFiltroRecetas]=useState(recetas)
@@ -45,19 +43,15 @@ const Recetas=()=>{
     useEffect(()=>{
       const valor=filtro
       setFiltro(valor)
-      console.log("FILTRO", valor)
       if(false){
           console.log("No hay nada", valor)
           setFiltroRecetas(recetas)
       }else{
           const filtrado= recetas.filter(receta => {
-            console.log("RECETA", receta)
             const filtroPorNombres=receta.title.toLowerCase().includes(valor.toLowerCase())
             const filtroPorCategoria=filtroCategorias.length === 0 || filtroCategorias.some(categoria => receta.categories.includes(categoria));
-            console.log(filtroPorCategoria)
             return filtroPorNombres && filtroPorCategoria
           })
-          console.log("FILTRADO", filtrado)
           setFiltroRecetas(filtrado)
       }
     }, [filtro, filtroCategorias, recetas])
