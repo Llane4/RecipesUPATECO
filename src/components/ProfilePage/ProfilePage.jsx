@@ -3,6 +3,7 @@ import "./profilePage.css"
 import axios from "axios";
 import EditarPage from "../EditarPage/EditarPage";
 import MisComentarios from "../Comentarios/MisComentarios";
+import ModalImagen from "../Modal/ModalImagen";
 
 const ProfilePage=()=>{
     const [user, setUser]=useState()
@@ -25,10 +26,7 @@ const ProfilePage=()=>{
     return (isLoading?
         <div className="profile-container">
           <div className="profile-header">
-            <img
-              src={user.image?user.image:"https://via.placeholder.com/150"}
-              className="profile-image"
-            />
+            <ModalImagen userImage={user.image} fetchUser={fetchUser}/>
             <div className="profile-info">
               <h1>{user.first_name} {user.last_name}</h1>
               <p>{user.email}</p>
