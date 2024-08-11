@@ -52,7 +52,7 @@ const EditarPage=()=>{
         <div className="misRecetas">
             {misRecetas && misRecetas.map((rec, index)=>(
                 <div className="item" key={index}>
-                    <div ><h2>{rec.title}</h2></div>
+                    <div ><h2 style={{cursor: "pointer"}} onClick={() => navigate(`/recetas/${rec.id}`)}>{rec.title}</h2></div>
                     <div className="misBotones">
                         <button onClick={() => navigate(`/editar/${rec.id}`)}>Editar</button>
                         <button onClick={()=>borrarReceta(rec.id)}>Borrar</button>

@@ -475,7 +475,8 @@ const CrearReceta=()=>{
                 <input type="file" className="formInput" id="fileInput" name="image" onChange={handleChangeImagen} accept="image/*" />
             </div>
             <div>
-            <select value={ingredienteSeleccionado.ingredient} style={{marginTop: "30px"}} id="ingredientes" name="ingredient"  onChange={handleChangeIngredienteS}>
+                <h3>Ingredientes: </h3>
+            <select value={ingredienteSeleccionado.ingredient} style={{marginTop: "10px"}} id="ingredientes" name="ingredient"  onChange={handleChangeIngredienteS}>
                 <option value="default" disabled defaultValue>Inserte ingrediente</option>
                 {ingredientes && ingredientes.map(ingrediente=>(
                     <option className="ingrediente" key={ingrediente.id} value={ingrediente.id} >{ingrediente.name}</option>
@@ -488,9 +489,9 @@ const CrearReceta=()=>{
                     <option key={index}>{unidad}</option>
                 ))}
             </select> 
-            <button onClick={handleButtonIngrediente}>Agregar ingrediente</button>
-            <Modal tipo={"Ingrediente"} fetchIngredientes={fetchIngredientes}/>
+            <button style={{margin:"5px"}} onClick={handleButtonIngrediente}>Agregar ingrediente</button>
             </div> 
+            <Modal tipo={"Ingrediente"} fetchIngredientes={fetchIngredientes}/>
             <div className="ingredientes">
                 {ingredientesReceta && ingredientesReceta.map((ingR, index)=>(
                     <div className="ingrediente" key={index}  onClick={() => borrarElemento({tipo:"Ingrediente" , id:ingR.ingredient})}>{ingR.name} {ingR.quantity} {ingR.measure}</div>
@@ -506,9 +507,9 @@ const CrearReceta=()=>{
                 ))}
                 </select>
                 <br/>
-                <button onClick={handleButtonCategoria}>Agregar categoria</button>
-                <Modal tipo={"Categoria"}/>
+                <button style={{margin:"5px"}} onClick={handleButtonCategoria}>Agregar categoria</button>
             </div>
+                <Modal tipo={"Categoria"}/>
                 <div className="ingredientes">
                     {categoriasRecetas && categoriasRecetas.map((categoria, index)=>(
                         <div className="ingrediente" key={index} onClick={() => borrarElemento({tipo:"Categoria" , id:categoria.id})}>{categoria.name}</div>

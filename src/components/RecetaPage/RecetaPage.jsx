@@ -57,16 +57,16 @@ const RecetaPage=()=>{
         <h2>{receta.title} <Puntuacion/></h2>
         
         <img src={receta.image?receta.image:"https://cdn0.recetasgratis.net/es/posts/6/2/9/galletas_con_chispas_de_chocolate_caseras_35926_600.webp"}/>
-        <div className="descrip">
+        {receta.description && <div className="descrip">
             <h2>{receta.description}</h2>
-        </div>
+        </div>}
+        
         <div className="boxinfo">
             <h2 className="info">Porciones: {receta.servings}</h2>
             <h2 className="info">Tiempo de preparacion: {receta.preparation_time} minutos</h2>
             <h2 className="info">Tiempo de cocinado: {receta.cooking_time} minutos</h2>
             <h2 className="info">Visitas: {receta.view_count}</h2>
         </div>
-        
         <div className="descrip">
             <h2>Ingredientes: </h2>
                 <Ingredientes/>

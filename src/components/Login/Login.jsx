@@ -50,7 +50,7 @@ const Login=()=>{
                 }
               )
                 await localStorage.setItem("id", datos.data.user__id)
-                
+                navigate("/recetas");
             }
         }).catch(function (error) {
             console.log(error);

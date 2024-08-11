@@ -1,10 +1,15 @@
 ### 1. **Documentación Técnica**
-   - **Introducción del Proyecto: IMPORTANTE**
+   - **Introducción del Proyecto:
      - RecipesUPATECO es una aplicacion de recetas que permite su busqueda por nombre y categoria.
      - Las tecnologias utilizadas en el proyecto son: ReactJS + Vite, CSS, axios.
      
-   - **Estructura del Proyecto: IMPORTANTE**
-     - **Estructura de archivos y carpetas:** Describe la organización del código, con una explicación de la funcionalidad de cada directorio principal.
+   - **Estructura del Proyecto:
+     - **Estructura de archivos y carpetas:** 
+          - **public:** Contiene los archivos estaticos y el archivo **index.html**.
+
+          - **src:** Carpeta principal que contiene el codigo fuente de la aplicacion.
+          - **components:** Contiene los componenetes de la aplicacion. Cada componente esta en su propia carpeta con su archivo **.jsx**.
+          - **config:** Contiene la configuracion para las rutas y los contextos.
      - **Descripción de los módulos:** Documenta cada módulo o componente importante, explicando su propósito y cómo se interconectan.
           - **Categorias**: Devuelve las categorias, que trae atravez de un fetch a la API, al componente Recetas.
           - **Comentarios**: Devuelve los comentarios de la receta actual al componente RecetaPage.
@@ -37,15 +42,7 @@
         2. Navega por la barra de navegacion hasta "Mi perfil".
         3. En la seccion de "Mis recetas" hacer click en el boton "Borrar" de la receta que quiera borrar.
         
-     
-     - **Capturas de pantalla:** Incluye capturas de pantalla de la interfaz de usuario, si es aplicable.
-     - **Flujos de trabajo:** Explica los flujos de trabajo comunes dentro de la aplicación.
-
-   - **API Documentation (si aplica): OPCIONAL**
-     - **Endpoints:** Lista y describe los endpoints disponibles, junto con los métodos HTTP (GET, POST, etc.).
-     - **Parámetros y Respuestas:** Documenta los parámetros esperados, posibles códigos de respuesta y ejemplos de peticiones y respuestas.
-     - **Autenticación y Autorización:** Explica cómo manejar la autenticación y los permisos dentro de la API.
-
+   
 
    - **Mantenimiento y Actualización:**
      - **Convenciones de código:**

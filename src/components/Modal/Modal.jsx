@@ -1,9 +1,10 @@
 import axios from "axios";
 import "./modal.css"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
     const [showModal, setShowModal] = useState(false);
+    const [texto, setTexto]=useState("")
     const [objeto, setObjeto]=useState({
         name:"",
         description:""
@@ -16,7 +17,7 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
         e.preventDefault()
         var ruta=""
         var metodo="POST"
-        var datos=objeto
+        var datos=objetos
         switch (tipo) {
             case "Ingrediente":
                 ruta="ingredients"
@@ -54,6 +55,7 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
         
     }
 
+
     const handleChange=(e)=>{
         e.preventDefault();
         setObjeto({
@@ -61,15 +63,30 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
             name: e.target.value
           });
     }
+
+    useEffect(()=>{
+        switch (tipo) {
+            case "Ingrediente":
+                setTexto("Crear ingrediente")
+                break;
+            case "Categoria":
+                setTexto("Crear categoria")
+                break;
+            case "Comentario":
+                setTexto("Editar")
+            default:
+                break;
+        }
+    }, [])
     return (
         <>
-            <button onClick={handleOpenModal}>{tipo}</button>
+            <button onClick={handleOpenModal}>{texto}</button>
             <div className={showModal?"modal-background":"disabled"}>
 
             <div className="modal-item" >
                 <div>
                     <label>
-                        {tipo && tipo=="Ingrediente"?<h2>Ingrediente</h2>:<h2>Categoria</h2>}
+                        {tipo && <h2>{tipo}</h2>}
                         <input type="text" value={objeto.name  || ''} onChange={handleChange} />
                     </label>
                 </div>
