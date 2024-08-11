@@ -11,55 +11,60 @@ import ContextProvider from "./ContextProvider";
 
 
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
     {
-        element: <NavbarLayout />,
-        children: [
+      element: <NavbarLayout />,
+      children: [
+        {
+          path: '/',
+          element: <Login />,
+          index: true,
+        },
+        {
+          path: '/recetas',
+          element: <Recetas />,
+        },
+        {
+          element: <ProtectedRoute />, // Protected routes go here
+          children: [
             {
-                path: '/',
-                element: <Login />,
-                index: true
-              },
-              {
-                path: '/recetas',
-                element:  <Recetas /> 
+              path: '/recetas/:id',
+              element: (
+                <ContextProvider>
+                  <RecetaPage />
+                </ContextProvider>
+              ),
             },
-              {
-                element: <ProtectedRoute/>,
-                children: [
-                  {
-                    path: '/recetas/:id',
-                    element: <ContextProvider><RecetaPage /></ContextProvider>
-                  },
-                  {
-                    path: '/editar/:id',
-                    element: <CrearReceta />
-                  },
-                  {
-                    path: '/misrecetas',
-                    element: <EditarPage />
-                  },
-                  {
-                    path: '/profile',
-                    element: <ProfilePage />
-                  },
-                  {
-                    path: '/crear',
-                    element: <CrearReceta />
-                  },
-                  
-                ]
-              },
-              {
-                path: '*',
-                element: <p style={{marginTop: "54px"}}>404 Error</p>
-              }]
+            {
+              path: '/editar/:id',
+              element: <CrearReceta />,
+            },
+            {
+              path: '/misrecetas',
+              element: <EditarPage />,
+            },
+            {
+              path: '/profile',
+              element: <ProfilePage />,
+            },
+            {
+              path: '/crear',
+              element: <CrearReceta />,
+            },
+          ],
+        },
+        {
+          path: '*',
+          element: <p style={{ marginTop: '54px' }}>404 Error</p>,
+        },
+      ],
     },
-    
-  ],{
-    basename: "/RecipesUPATECO",  
+  ],
+  {
+    basename: '/RecipesUPATECO',
   }
-
 );
+
 
 export default router
