@@ -373,8 +373,7 @@ const CrearReceta=()=>{
         const categoriasData=await axios.get(`${import.meta.env.VITE_BASE_URL}/reciperover/categories`)
 
         while(url){
-            const secureUrl =await  url.replace("http://", "https://");
-            console.log(secureUrl)
+            const secureUrl =await url.replace("http://", "https://");
             const ingredientesData=await axios.get(secureUrl)
             todosIngredientes=[...todosIngredientes, ...ingredientesData.data.results]
             url=ingredientesData.data.next
