@@ -343,6 +343,10 @@ const CrearReceta=()=>{
 
     const handleButtonPaso=(e)=>{
         e.preventDefault()
+        if(pasoActual.trim()==""){
+            alert("Los pasos no pueden estar vacios.")
+            return
+        }
         setPasos([...pasos, pasoActual])
         setPasoActual("")
     }
