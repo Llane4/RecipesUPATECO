@@ -17,7 +17,7 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
         e.preventDefault()
         var ruta=""
         var metodo="POST"
-        var datos=objetos
+        var datos=objeto
         switch (tipo) {
             case "Ingrediente":
                 ruta="ingredients"
