@@ -1,9 +1,10 @@
 import { useState,useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { dataUser } from '../../config/UserContextProvider';
 
 const Login=()=>{
+    const { user, fetchUser, setUser } = dataUser();
     const navigate=useNavigate()
 
     useEffect(() => {
@@ -50,6 +51,7 @@ const Login=()=>{
                 }
               )
                 await localStorage.setItem("id", datos.data.user__id)
+                fetchUser(datos.data.user__id)
                 navigate("/recetas");
             }
         }).catch(function (error) {

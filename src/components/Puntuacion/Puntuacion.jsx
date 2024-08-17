@@ -24,8 +24,8 @@ const Puntuacion=()=>{
     console.log("Puntuacion", data.recetaID)
     return (rating?<div>
         ⭐ {rating}/5 {`(Votos: ${cantRating})`}
-        <ModalRating fetchComments={fetchRating}/>
-    </div>:null)
+        {localStorage.getItem("token") && <ModalRating fetchComments={fetchRating}/>}
+    </div>:<div><p>⭐ Sin votos</p>  {localStorage.getItem("token") && <ModalRating fetchComments={fetchRating}/>}</div>)
 }
 
 export default Puntuacion

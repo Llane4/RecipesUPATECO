@@ -1,22 +1,36 @@
 import { useNavigate } from 'react-router-dom';
 import "./navbar.css"
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { dataUser } from '../../config/UserContextProvider';
 
 const Navbar=()=>{
+    const { user, fetchUser, setUser } = dataUser();
     const navigate = useNavigate();
+    const [userData, setUserData]=useState(null)
     const borrarDatos=(e)=>{
         e.preventDefault()
         localStorage.removeItem("token")
         localStorage.removeItem("id")
+        setUser(null)
         navigate("/")
       }
+    
 
+    useEffect(()=>{
+        fetchUser()
+        console.log("USER", user)
+    }, [fetchUser])
+    console.log("USER", user)
     return (
         <header className="navheader">
             <nav className="navbar">
                 <div className="navcontainer">
-                    <a>
-                        
-                    </a>
+                    <div>
+                      {
+                        user && <p>{user.userName}</p>
+                      }  
+                    </div>
                     <div className="navcontainerbuttons"   >
                         <button className="navbuttons" onClick={() => navigate('/recetas')}>
                             Recetas

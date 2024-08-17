@@ -31,7 +31,9 @@ const Comentarios= ()=>{
             const datosComentarios=responseComentarios.data.results
 
             const comentariosActual=[]
+            if(localStorage.getItem("token")){
 
+            
             for(let comentario of datosComentarios){
                 if(comentario.recipe == recetaID){
                     const responseUser=await axios.get(`${import.meta.env.VITE_BASE_URL}/users/profiles/${comentario.author}`, {
@@ -47,6 +49,7 @@ const Comentarios= ()=>{
                       })
                 }
             }
+        }
 
             setComment(comentariosActual)
         } catch (error) {
@@ -58,16 +61,16 @@ const Comentarios= ()=>{
         fetchComentarios()
     },[])
    
-
+    
     return (
         <div>
             <h2>Comentarios: </h2>
-            <InputComentario fetchComentarios={fetchComentarios}/>
+            {localStorage.getItem("token")?<InputComentario fetchComentarios={fetchComentarios}/>:<div  className="buttonComment"><button>Para ver los comentarios iniciar sesion</button></div>}
             {
                 comment && comment.map((comentario, index)=>(
                     <div    className="box"  key={index}>
                         <div >
-                            <img className="imagen" src={comentario.image ? comentario.image : "https://thumbs.dreamstime.com/b/icono-an%C3%B3nimo-de-la-cara-del-perfil-persona-gris-silueta-avatar-masculino-defecto-placeholder-foto-aislado-en-el-fondo-blanco-107327860.jpg"}/>
+                            <img className="imagen" src={comentario.image ? `${import.meta.env.VITE_BASE_URL}${comentario.image}` : "https://thumbs.dreamstime.com/b/icono-an%C3%B3nimo-de-la-cara-del-perfil-persona-gris-silueta-avatar-masculino-defecto-placeholder-foto-aislado-en-el-fondo-blanco-107327860.jpg"}/>
                         </div>
                         <div className="datos">
                             <div className="nombre">

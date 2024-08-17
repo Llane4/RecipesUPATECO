@@ -9,9 +9,11 @@
 }
 
 .imagen{
-    max-width: 60px;
-    border-radius: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     border: 3px solid black;
+    object-fit: cover;
 }
 
 .nombre{
@@ -28,4 +30,9 @@
 }
 .borrar{
     cursor: pointer;
+}
+
+.buttonComment{
+    display:flex;
+    justify-content: center;
 }

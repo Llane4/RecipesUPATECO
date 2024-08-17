@@ -26,16 +26,17 @@ const router = createBrowserRouter(
           element: <Recetas />,
         },
         {
+          path: '/recetas/:id',
+          element: (
+            <ContextProvider>
+              <RecetaPage />
+            </ContextProvider>
+          ),
+        },
+        {
           element: <ProtectedRoute />, // Protected routes go here
           children: [
-            {
-              path: '/recetas/:id',
-              element: (
-                <ContextProvider>
-                  <RecetaPage />
-                </ContextProvider>
-              ),
-            },
+            
             {
               path: '/editar/:id',
               element: <CrearReceta />,
