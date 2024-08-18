@@ -80,7 +80,7 @@ const Modal=({tipo, fetchIngredientes, commentID=0, recipeID=0})=>{
     }, [])
     return (
         <>
-            <button onClick={handleOpenModal}>{texto}</button>
+            <button type="button" onClick={handleOpenModal}>{texto}</button>
             <div className={showModal?"modal-background":"disabled"}>
 
             <div className="modal-item" >
