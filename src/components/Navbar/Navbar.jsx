@@ -28,7 +28,10 @@ const Navbar=()=>{
                 <div className="navcontainer">
                     <div>
                       {
-                        user && <p>{user.userName}</p>
+                        user && <div className='navProfile'>
+                            <img src={`${import.meta.env.VITE_BASE_URL}${user.image}`}/>
+                            <p>{user.userName}</p>
+                        </div>
                       }  
                     </div>
                     <div className="navcontainerbuttons"   >
